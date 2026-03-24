@@ -17,7 +17,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // post.ch/ und alle folgenden / sind auch erlaubt
+                registry.addMapping("/**")
                         // Schutz vor CSRF-Angriffen
                         // Welche URL darf auf das Backend zugreifen? Können auch IP's sein
                         .allowedOrigins("http://localhost:3000") // ggf. hier noch eigene IP + Teamkollege hinzufügen: "http://172.16.2.108:3000"                        // Mit welcher HTTP Function darf zugegriffen werden?
