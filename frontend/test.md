@@ -1,1 +1,0 @@
-Frontend Project will live here in the future.
