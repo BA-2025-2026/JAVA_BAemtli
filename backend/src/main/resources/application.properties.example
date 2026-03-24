@@ -1,16 +1,25 @@
-# Application Properties to set db connection, db user, db password and others.
+# ==== DO NOT SHARE THIS FILE ====
 
-# Please replace values 'pleasechange' with the credentials of your local MySQL 8 db, if you plan
-# to run the app in your IDE.
-
-# If you plan to deploy with docker compose, the variables ${EXAMPLE_VARIABLE} will be filled.
+# THIS FILE CONTAINS SENSITIVE PASSWORDS
+# AND OTHER SENSITIVE INFORMATION
 
 spring.application.name=baemtli
 
-# Syntax of variables: ${ENV_VARIABLE_LOADED_FROM_DOTENV:yourOwnFallbackValue}
-spring.datasource.url=jdbc:mysql://${DB_HOST:localhost}:3306/Baemtli
-spring.datasource.username=${DB_USER:pleasechange}
-spring.datasource.password=${DB_PASSWORD:pleasechange}
+# JWT
+baemtli.jwt.secret=
 
-spring.jpa.hibernate.ddl-auto=validate
+
+# DATABASE
+# Development Database (locally on the developers machine)
+spring.datasource.url=jdbc:mysql://localhost:3306/baemtli
+spring.datasource.username=
+spring.datasource.password=
+
+# Azure Database (for a central development database that all devs can use together)
+# spring.datasource.url=
+# spring.datasource.username=
+# spring.datasource.password=
+
+# HIBERNATE
+spring.jpa.hibernate.ddl-auto=update
 spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

@@ -6,6 +6,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import net.ictcampus.baemtli.security.SecurityConstants;
 import net.ictcampus.baemtli.user.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,10 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+
+    // Load JWT Secret from application.properties
+    @Value("${baemtli.jwt.secret}")
+    private String secret;
 
     // Tokeninformationen abpacken und generieren
     public String generateToken(UserDetails userDetails) {
@@ -35,8 +40,8 @@ public class JwtService {
         return SecurityConstants.EXPIRATION_TIME;
     }
 
-    private static SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET);
+    private SecretKey getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
