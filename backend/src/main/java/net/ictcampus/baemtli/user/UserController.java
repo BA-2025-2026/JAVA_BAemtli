@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "UserController", description = "Processes /users endpoint requests")
+@Tag(name = "Users", description = "User accounts of the Ämtliplantool app. Coaches have an account too.")
 @RestController
 @RequestMapping("/users")
 public class UserController {

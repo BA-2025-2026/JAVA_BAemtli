@@ -5,16 +5,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import net.ictcampus.baemtli.auth.dto.AuthUserDTO;
 import net.ictcampus.baemtli.auth.jwt.JwtService;
 import net.ictcampus.baemtli.auth.jwt.dto.JwtDTO;
+import net.ictcampus.baemtli.security.Permission;
+import net.ictcampus.baemtli.user.dto.CreateUserDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Authentication", description = "Login (register not yet implemented)")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -27,16 +33,15 @@ public class AuthenticationController {
         this.jwtService = jwtService;
     }
 
-    // Register might be implemented later
-    // For now, users can be created manually in the db
-//    @Operation(summary = "Create a new User", description = "Registers a new user in the database. Permission: trainee:write:all", security = {@SecurityRequirement(name = "JWT-Token")})
+    // Register not yet implemented
+
+//    @Operation(summary = "Create a new User", description = "Registers a new user in the database.")
 //    @ApiResponses({
 //            @ApiResponse(responseCode = "201", description = "User successfully created"),
 //            @ApiResponse(responseCode = "401", description = "Invalid request data"),
 //            @ApiResponse(responseCode = "403", description = "Forbidden")
 //    })
 //    @PostMapping(value = "/register", consumes = "application/json")
-//    @org.springframework.security.access.prepost.PreAuthorize("hasAuthority('trainee:write:all')")
 //    public ResponseEntity<Void> register(@Valid @RequestBody CreateUserDTO createUserDTO) {
 //        authenticationService.signup(createUserDTO);
 //        return ResponseEntity.status(201).build();

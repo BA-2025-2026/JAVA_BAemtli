@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "TeamController", description = "Processes /teams endpoint requests")
+@Tag(name = "Teams", description = "At ICT-Campus trainees are organized in teams.")
 @RestController
 @RequestMapping("/teams")
 public class TeamController {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "ChoreCategoryController", description = "Processes /chorecategories endpoint requests")
+@Tag(name = "Chore Category", description = "Types of chores that need to be done (clean kitchen, airing the rooms, etc.)")
 @RestController
 @RequestMapping("/chorecategories")
 public class ChoreCategoryController {

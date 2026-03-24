@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "TraineeController", description = "Processes /trainees endpoint requests")
+@Tag(name = "Trainees", description = "Lernende of ICT-Campus are called Trainees")
 @RestController
 @RequestMapping("/trainees")
 public class TraineeController {

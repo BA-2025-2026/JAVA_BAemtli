@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "ChoreAssignmentController", description = "Management of daily chore assignments (Trainee to Chore)")
+@Tag(name = "Chore Assignments", description = "To actually assign a chore to a trainee on a specific day")
 @RestController
 @RequestMapping("/choreassignments")
 public class ChoreAssignmentController {

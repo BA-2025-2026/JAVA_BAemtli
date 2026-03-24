@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Tag(name = "WorkdayController", description = "Management of BA workdays")
+@Tag(name = "Workdays", description = "BA workdays are usually Wed to Fri, but not always ;-)")
 @RestController
 @RequestMapping("/workdays")
 public class WorkdayController {

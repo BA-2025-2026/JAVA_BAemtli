@@ -6,6 +6,7 @@ package net.ictcampus.baemtli.security;
  */
 public class SecurityConstants {
 
+
     // JWT Secret is set and loaded from application.properties
     public static final long EXPIRATION_TIME = 31556952000L; // 1 Year in milliseconds
     public static final String TOKEN_PREFIX = "Bearer ";
