@@ -66,11 +66,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, apiPrefix + "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
 
                         // --- TEAMS ---
-                        // TESTING
+                        // Temporarily open for gibb K8s Project
                         .requestMatchers(HttpMethod.GET, apiPrefix + "/teams/**").permitAll()
                         .requestMatchers(HttpMethod.POST, apiPrefix + "/teams/**").permitAll()
 //                      .requestMatchers(HttpMethod.GET, apiPrefix + "/teams/**").hasAuthority(Permission.TEAM_READ_ALL)
-                        .requestMatchers(HttpMethod.POST, apiPrefix + "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
+//                        .requestMatchers(HttpMethod.POST, apiPrefix + "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
                         .requestMatchers(HttpMethod.PATCH, apiPrefix + "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
                         .requestMatchers(HttpMethod.DELETE, apiPrefix + "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
 

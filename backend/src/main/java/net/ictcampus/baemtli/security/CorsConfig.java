@@ -20,6 +20,10 @@ public class CorsConfig implements WebMvcConfigurer {
     @Value("${baemtli.api.prefix}")
     private String apiPrefix;
 
+    // CORS Configuration for K8s deployment
+    @Value("${baemtli.cors.allowed-origins:http://localhost:3000}")
+    private String allowedOrigins;
+
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         // Fügt /api/v1 vor alle Klassen, die mit @RestController annotiert sind
@@ -35,8 +39,8 @@ public class CorsConfig implements WebMvcConfigurer {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping(apiPrefix + "/**")
                         // Schutz vor CSRF-Angriffen
-                        // Welche URL darf auf das Backend zugreifen? Können auch IP's sein
-                        .allowedOrigins("http://localhost:3000") // ggf. hier noch eigene IP + Teamkollege hinzufügen: "http://172.16.2.108:3000"                        // Mit welcher HTTP Function darf zugegriffen werden?
+                        // Welche URL darf auf das Backend zugreifen?
+                        .allowedOrigins(allowedOrigins.split(","))
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         // Welche Header werden akzeptiert? Bspw. Token kommen in Authorization. * ist eine Wildcard
                         .allowedHeaders("*")

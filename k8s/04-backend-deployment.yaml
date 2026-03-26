@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baemtli-backend
+  namespace: baemtli-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: baemtli-backend
+  template:
+    metadata:
+      labels:
+        app: baemtli-backend
+    spec:
+      containers:
+        - name: backend
+          image: baemtli-backend:v2
+          imagePullPolicy: Never # Important when working with K8s in Docker (locally)
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-service:3306/baemtli?allowPublicKeyRetrieval=true&useSSL=false"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: baemtli-secrets
+                  key: mysql-root-password
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "update"
+            - name: BAEMTLI_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: baemtli-secrets
+                  key: jwt-secret
+            - name: BAEMTLI_CORS_ALLOWED_ORIGINS
+              value: "http://localhost:30080,http://localhost:3000"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: baemtli-project
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: baemtli-backend
+
