@@ -27,7 +27,8 @@ body {
 }
 
 body {
-  min-height: 100%;
+  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: row;
   color: var(--foreground);
@@ -41,6 +42,7 @@ body {
 main {
   padding: 2rem;
   flex-grow: 1;
+  overflow-y: auto; /* main is scrollable, sidebar not */
 }
 
 /* Set default HTML Sytles */

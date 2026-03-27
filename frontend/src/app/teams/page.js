@@ -1,28 +1,32 @@
 "use client";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "@/services/api";
 
 export default function Teams() {
-  const testTeams = [
-    { id: 1, name: "PUNCS" },
-    { id: 2, name: "Plapplis" },
-    { id: 3, name: "Beeliveries" },
-  ];
-  const [teams, setTeams] = useState(testTeams);
+  const [teams, setTeams] = useState([]);
   const [isAddingTeam, setIsAddingTeam] = useState(false);
   const [addTeamValue, setAddTeamText] = useState("");
 
-  const addTeam = () => {
-    const newTeam = {
-      id: crypto.randomUUID(),
-      name: addTeamValue,
-    };
+  // Load teams
+  useEffect(() => {
+    api.get("/teams").then(setTeams).catch(console.error);
+  }, []);
+
+  const addTeam = async () => {
+    const newTeam = await api.post("/teams", { name: addTeamValue });
     setTeams([...teams, newTeam]);
     setAddTeamText("");
     setIsAddingTeam(false);
   };
 
-  const deleteTeam = (id) => {
+  const deleteTeam = async (id) => {
+    try {
+      await api.delete(`/teams/${id}`);
+    } catch (error) {
+      console.error("Fehler beim Löschen:", error.message);
+      // TODO: Show to user
+    }
     setTeams(teams.filter((team) => team.id !== id));
   };
 
