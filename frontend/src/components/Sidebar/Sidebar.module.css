@@ -3,7 +3,11 @@
   min-width: 230px;
   max-width: 230px;
 
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 1.2rem;
 
   box-shadow: var(--shadow);
 }
@@ -19,4 +23,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.active {
+  font-weight: 600;
 }

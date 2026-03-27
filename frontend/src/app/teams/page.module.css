@@ -1,0 +1,41 @@
+.teamTitleCard {
+  width: 100%;
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border-radius: var(--borderradius);
+  box-shadow: var(--shadow);
+  padding: 0.8rem 1rem;
+  margin: 1rem 0;
+}
+
+.crudButtons {
+  visibility: hidden;
+  cursor: pointer;
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.teamTitleCard:hover .crudButtons {
+  visibility: visible;
+}
+
+.addTeamSection {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.addTeamSection button {
+  margin-left: auto;
+}
+
+.addTeamSection input {
+  width: 60%;
+  padding: 0.3rem;
+  font-weight: 600;
+}
