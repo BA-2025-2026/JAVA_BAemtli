@@ -27,13 +27,13 @@ public class TeamService {
 
     public TeamDTO getTeamById(Integer id) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Team not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Team not found with ID: " + id));
         return TeamMapper.toDto(team);
     }
 
     public TeamDTO createTeam(CreateTeamDTO dto) {
         if (teamRepository.findByName(dto.getName()).isPresent()) {
-            throw new EntityExistsException("Team with this name already exists");
+            throw new EntityExistsException("Team with name " + dto.getName() + " already exists");
         }
 
         Team team = new Team()
@@ -45,7 +45,7 @@ public class TeamService {
 
     public TeamDTO updateTeam(Integer id, UpdateTeamDTO dto) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Team not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Team not found with ID: " + id));
 
         if (dto.getName() != null && !dto.getName().isBlank()) {
             teamRepository.findByName(dto.getName())
@@ -63,11 +63,12 @@ public class TeamService {
 
     public void deleteTeam(Integer id) {
         if (!teamRepository.existsById(id)) {
-            throw new EntityNotFoundException("Team not found");
+            throw new EntityNotFoundException("Team not found with ID: " + id);
         }
         try {
             teamRepository.deleteById(id);
         } catch (Exception e) {
+            // TODO: Don't we have ON DELETE CASCADE?
             throw new IllegalStateException("Team cannot be deleted as it is still in use", e);
         }
     }

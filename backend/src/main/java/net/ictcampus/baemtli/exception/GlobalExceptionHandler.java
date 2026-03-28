@@ -5,6 +5,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.security.SignatureException;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -42,6 +43,12 @@ public class GlobalExceptionHandler {
                 fieldErrors
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    // 400 Bad Request -> Illegal Argument (ex. Trainee doesn't belong to the team assigned to this chore)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     // 404 Not Found (z.B. angegebene userId oder ein Foreign Key wurde nicht gefunden)
@@ -74,7 +81,7 @@ public class GlobalExceptionHandler {
     // 401 Unauthorized (Falsche Logindaten)
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiError> handleBadCredentials(BadCredentialsException ex) {
-        return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return buildError(HttpStatus.UNAUTHORIZED, "Username or password is incorrect.");
     }
 
     // 401 Unauthorized (JWT expired)
@@ -87,6 +94,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<ApiError> handleJwtInvalid(SignatureException ex) {
         return buildError(HttpStatus.UNAUTHORIZED, "Invalid JWT signature.");
+    }
+
+    // 403 Forbidden
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiError> handleAccessDenied(AccessDeniedException ex) {
+        return buildError(HttpStatus.FORBIDDEN, "You don't have permission to access this resource.");
     }
 
     // RuntimeException

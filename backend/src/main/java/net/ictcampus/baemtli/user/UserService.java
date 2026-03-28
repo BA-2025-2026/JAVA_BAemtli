@@ -33,13 +33,13 @@ public class UserService {
 
     public UserDTO getUser(Integer id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
         return UserMapper.toDto(user);
     }
 
     public User updateUser(Integer id, UpdateUserDTO dto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
 
         // Check if updated username is still available
         if (dto.getUsername() != null && !dto.getUsername().isBlank()) {
@@ -62,7 +62,7 @@ public class UserService {
 
     public void deleteUser(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw new EntityNotFoundException("User not found");
+            throw new EntityNotFoundException("User not found with ID: " + id);
         }
         userRepository.deleteById(id);
     }

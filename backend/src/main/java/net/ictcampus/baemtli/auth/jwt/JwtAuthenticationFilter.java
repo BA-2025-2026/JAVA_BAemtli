@@ -112,13 +112,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
 
-            System.out.println("JWTAuth will call next filter.");
             // Filter-Chain funktioniert wie eine Zwiebel, äussere Schicht ruft eine weiter innen auf
             // und pausiert so lange, bis diese (und deren inneren Schichten!) fertig sind
             // Führt die nächsten Filter aus und springt dann schrittweise zurück
             filterChain.doFilter(request, response);
 
-            System.out.println("JWTAuth Filter ended.");
         } catch (Exception exception) {
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
