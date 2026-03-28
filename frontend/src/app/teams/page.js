@@ -2,12 +2,18 @@
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 import api from "@/services/api";
+import TeamNameInput from "@/components/TeamNameInput/TeamNameInput";
+
+// TODO: Could be centralized
+function extractError(error) {
+  if (error.fieldErrors?.length) return error.fieldErrors[0].error;
+  return error.message || "Ein Fehler ist aufgetreten";
+}
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
   const [isAddingTeam, setIsAddingTeam] = useState(false);
-  const [addTeamValue, setAddTeamText] = useState("");
-  const [fieldError, setFieldError] = useState(null);
+  const [editingId, setEditingId] = useState(null);
 
   // Load teams
   useEffect(() => {
@@ -19,42 +25,28 @@ export default function Teams() {
     loadTeams();
   }, []);
 
-  const addTeam = async () => {
-    setFieldError(null);
-
-    // Some validation
-    const trimmed = addTeamValue.trim();
-    if (!trimmed) {
-      setFieldError("Name darf nicht leer sein");
-      return;
-    }
-    if (trimmed.length < 2 || trimmed.length > 30) {
-      setFieldError("Name muss zwischen 2 und 30 Zeichen lang sein");
-      return;
-    }
-
-    const { data, error } = await api.post("/teams", { name: trimmed });
-
-    if (error) {
-      // fieldErrors from Backend
-      if (error.fieldErrors?.length) {
-        setFieldError(error.fieldError[0].error);
-      } else {
-        setFieldError(error.message);
-      }
-      return;
-    }
-
+  // Gibt null bei Erfolg, Error-String bei Fehler
+  const handleCreate = async (name) => {
+    const { data, error } = await api.post("/teams", { name });
+    if (error) return extractError(error);
     setTeams([...teams, data]);
-    setAddTeamText("");
-    setFieldError(null);
     setIsAddingTeam(false);
+    return null;
   };
 
-  const deleteTeam = async (id) => {
+  // Gibt null bei Erfolg, Error-String bei Fehler
+  const handleUpdate = async (id, name) => {
+    const { data, error } = await api.patch(`/teams/${id}`, { name });
+    if (error) return extractError(error);
+    setTeams(teams.map((t) => (t.id === id ? data : t)));
+    setEditingId(null);
+    return null;
+  };
+
+  const handleDelete = async (id) => {
     const { error } = await api.delete(`/teams/${id}`);
     if (error) return;
-    setTeams(teams.filter((team) => team.id !== id));
+    setTeams(teams.filter((t) => t.id !== id));
   };
 
   return (
@@ -63,43 +55,40 @@ export default function Teams() {
 
       {teams.map((team) => (
         <div className={styles.teamTitleCard} key={team.id}>
-          <h4>{team.name}</h4>
-          <div className={styles.crudButtons}>
-            <span className="material-symbols-outlined">edit</span>
-            <span
-              className="material-symbols-outlined"
-              onClick={() => deleteTeam(team.id)}
-            >
-              delete
-            </span>
-          </div>
+          {editingId === team.id ? (
+            <TeamNameInput
+              initialValue={team.name}
+              onSave={(name) => handleUpdate(team.id, name)}
+              onCancel={() => setEditingId(null)}
+            />
+          ) : (
+            <>
+              <h4>{team.name}</h4>
+              <div className={styles.crudButtons}>
+                <span
+                  className="material-symbols-outlined"
+                  onClick={() => setEditingId(team.id)}
+                >
+                  edit
+                </span>
+                <span
+                  className="material-symbols-outlined"
+                  onClick={() => handleDelete(team.id)}
+                >
+                  delete
+                </span>
+              </div>
+            </>
+          )}
         </div>
       ))}
 
       {isAddingTeam ? (
-        <div>
-          <div className={`${styles.teamTitleCard} ${styles.addTeamSection}`}>
-            <input
-              type="text"
-              onChange={(e) => {
-                setAddTeamText(e.target.value);
-                setFieldError(null); // Clear error when typing
-              }}
-              value={addTeamValue}
-              className={fieldError ? styles.inputError : ""}
-              placeholder="Teamname"
-            />
-            <button onClick={addTeam}>Team erstellen</button>
-            <button
-              onClick={() => {
-                setIsAddingTeam(false);
-                setFieldError(null);
-              }}
-            >
-              Abbrechen
-            </button>
-          </div>
-          {fieldError && <p className={styles.fieldErrorText}>{fieldError}</p>}
+        <div className={`${styles.teamTitleCard} ${styles.addTeamSection}`}>
+          <TeamNameInput
+            onSave={handleCreate}
+            onCancel={() => setIsAddingTeam(false)}
+          />
         </div>
       ) : (
         <div

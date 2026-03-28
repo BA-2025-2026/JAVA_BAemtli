@@ -30,11 +30,11 @@ async function fetchWith(method, path, body = null, token = null) {
       }
 
       // 400: Validierung → kein Toast, Error geht an die Page
-      if (response.status === 400) {
+      if (response.status === 400 || response.status === 409) {
         return { data: null, error: json };
       }
 
-      // 403, 404, 409, alles andere → Toast
+      // 403, 404, alles andere → Toast
       getGlobalShowError()?.(message);
       return { data: null, error: json };
     }
@@ -50,6 +50,7 @@ const api = {
   get: (path, token) => fetchWith("GET", path, null, token),
   post: (path, body, token) => fetchWith("POST", path, body, token),
   put: (path, body, token) => fetchWith("PUT", path, body, token),
+  patch: (path, body, token) => fetchWith("PATCH", path, body, token),
   delete: (path, token) => fetchWith("DELETE", path, null, token),
 };
 

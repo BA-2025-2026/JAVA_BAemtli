@@ -1,0 +1,26 @@
+.wrapper {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.row input {
+  flex-grow: 1;
+  padding: 0.3rem;
+  font-weight: 600;
+}
+
+.inputError {
+  outline: 2px solid var(--error);
+}
+
+.errorText {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
