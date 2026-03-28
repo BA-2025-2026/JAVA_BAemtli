@@ -39,3 +39,13 @@
   padding: 0.3rem;
   font-weight: 600;
 }
+
+.inputError {
+  outline: 2px solid var(--error);
+}
+
+.fieldErrorText {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin: -0.5rem 0 0 1rem;
+}

@@ -1,3 +1,5 @@
+import { getGlobalShowError } from "@/context/ErrorContext";
+
 const BASE_URL = "http://localhost:8080/api/v1";
 
 async function fetchWith(method, path, body = null, token = null) {
@@ -8,19 +10,40 @@ async function fetchWith(method, path, body = null, token = null) {
   if (body) options.body = JSON.stringify(body);
   if (token) options.headers.Authorization = `Bearer ${token}`;
 
-  const response = await fetch(`${BASE_URL}${path}`, options);
-  if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+  try {
+    const response = await fetch(`${BASE_URL}${path}`, options);
 
-  // Responses with no JSON body
-  if (
-    response.status === 204 ||
-    response.headers.get("content-length") === "0"
-  ) {
-    return null;
+    // DELETE gibt 204 No Content zurück (kein Body)
+    if (response.status === 204) {
+      return { data: null, error: null };
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      const message = json.message || `Fehler ${response.status}`;
+
+      // 401: Nicht eingeloggt → ab zum Login
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return { data: null, error: json };
+      }
+
+      // 400: Validierung → kein Toast, Error geht an die Page
+      if (response.status === 400) {
+        return { data: null, error: json };
+      }
+
+      // 403, 404, 409, alles andere → Toast
+      getGlobalShowError()?.(message);
+      return { data: null, error: json };
+    }
+
+    return { data: json, error: null };
+  } catch (err) {
+    getGlobalShowError()?.("Server nicht erreichbar");
+    return { data: null, error: { message: "Server nicht erreichbar" } };
   }
-
-  // Responses with JSON body
-  return response.json();
 }
 
 const api = {

@@ -1,0 +1,30 @@
+.toast {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d32f2f;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--borderradius);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 1000;
+  animation:
+    slideDown 0.3s ease forwards,
+    slideUp 0.3s ease 4.7s forwards;
+}
+
+@keyframes slideDown {
+  to {
+    top: 1.5rem;
+  }
+}
+
+@keyframes slideUp {
+  to {
+    top: -100px;
+  }
+}

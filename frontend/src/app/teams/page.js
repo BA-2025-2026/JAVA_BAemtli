@@ -7,26 +7,53 @@ export default function Teams() {
   const [teams, setTeams] = useState([]);
   const [isAddingTeam, setIsAddingTeam] = useState(false);
   const [addTeamValue, setAddTeamText] = useState("");
+  const [fieldError, setFieldError] = useState(null);
 
   // Load teams
   useEffect(() => {
-    api.get("/teams").then(setTeams).catch(console.error);
+    const loadTeams = async () => {
+      const { data, error } = await api.get("/teams");
+      if (error) return;
+      setTeams(data);
+    };
+    loadTeams();
   }, []);
 
   const addTeam = async () => {
-    const newTeam = await api.post("/teams", { name: addTeamValue });
-    setTeams([...teams, newTeam]);
+    setFieldError(null);
+
+    // Some validation
+    const trimmed = addTeamValue.trim();
+    if (!trimmed) {
+      setFieldError("Name darf nicht leer sein");
+      return;
+    }
+    if (trimmed.length < 2 || trimmed.length > 30) {
+      setFieldError("Name muss zwischen 2 und 30 Zeichen lang sein");
+      return;
+    }
+
+    const { data, error } = await api.post("/teams", { name: trimmed });
+
+    if (error) {
+      // fieldErrors from Backend
+      if (error.fieldErrors?.length) {
+        setFieldError(error.fieldError[0].error);
+      } else {
+        setFieldError(error.message);
+      }
+      return;
+    }
+
+    setTeams([...teams, data]);
     setAddTeamText("");
+    setFieldError(null);
     setIsAddingTeam(false);
   };
 
   const deleteTeam = async (id) => {
-    try {
-      await api.delete(`/teams/${id}`);
-    } catch (error) {
-      console.error("Fehler beim Löschen:", error.message);
-      // TODO: Show to user
-    }
+    const { error } = await api.delete(`/teams/${id}`);
+    if (error) return;
     setTeams(teams.filter((team) => team.id !== id));
   };
 
@@ -50,14 +77,29 @@ export default function Teams() {
       ))}
 
       {isAddingTeam ? (
-        <div className={`${styles.teamTitleCard} ${styles.addTeamSection}`}>
-          <input
-            type="text"
-            onChange={(e) => setAddTeamText(e.target.value)}
-            value={addTeamValue}
-          />
-          <button onClick={addTeam}>Team erstellen</button>
-          <button onClick={() => setIsAddingTeam(false)}>Abbrechen</button>
+        <div>
+          <div className={`${styles.teamTitleCard} ${styles.addTeamSection}`}>
+            <input
+              type="text"
+              onChange={(e) => {
+                setAddTeamText(e.target.value);
+                setFieldError(null); // Clear error when typing
+              }}
+              value={addTeamValue}
+              className={fieldError ? styles.inputError : ""}
+              placeholder="Teamname"
+            />
+            <button onClick={addTeam}>Team erstellen</button>
+            <button
+              onClick={() => {
+                setIsAddingTeam(false);
+                setFieldError(null);
+              }}
+            >
+              Abbrechen
+            </button>
+          </div>
+          {fieldError && <p className={styles.fieldErrorText}>{fieldError}</p>}
         </div>
       ) : (
         <div
