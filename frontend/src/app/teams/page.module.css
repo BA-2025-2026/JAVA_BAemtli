@@ -8,7 +8,6 @@
   border-radius: var(--borderradius);
   box-shadow: var(--shadow);
   padding: 0.8rem 1rem;
-  margin: 1rem 0;
 }
 
 .crudButtons {
@@ -48,4 +47,9 @@
   color: var(--error);
   font-size: 0.85rem;
   margin: -0.5rem 0 0 1rem;
+}
+
+.traineeCards {
+  display: flex;
+  flex-direction: row;
 }
