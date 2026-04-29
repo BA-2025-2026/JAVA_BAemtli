@@ -54,7 +54,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
 
                         // --- TEAMS ---
-                        .requestMatchers(HttpMethod.GET, "/teams/**").hasAuthority(Permission.TEAM_READ_ALL)
+                        .requestMatchers(HttpMethod.GET, "/teams/**").permitAll()
+                        // .requestMatchers(HttpMethod.GET, "/teams/**").hasAuthority(Permission.TEAM_READ_ALL)
                         .requestMatchers(HttpMethod.POST, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
                         .requestMatchers(HttpMethod.PATCH, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
                         .requestMatchers(HttpMethod.DELETE, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
