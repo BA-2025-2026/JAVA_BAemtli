@@ -10,7 +10,7 @@ export default async function ActivityWrapper() {
   return (
     <section>
       <h1>Teams & Lernende</h1>
-      <TeamFeed />
+      <TeamFeed teams={teams} />
     </section>
   );
 }

@@ -5,6 +5,10 @@ export default function Teams() {
   return (
     <div>
       <TeamWrapper />
+      <div className={`${styles.teamTitleCard} ${styles.addTeamSection}`}>
+        <span className="material-symbols-outlined">add</span>
+        <h4>Neues Team anlegen</h4>
+      </div>
     </div>
   );
 }

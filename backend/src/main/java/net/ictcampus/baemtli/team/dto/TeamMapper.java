@@ -1,13 +1,18 @@
 package net.ictcampus.baemtli.team.dto;
 
 import net.ictcampus.baemtli.team.Team;
+import net.ictcampus.baemtli.trainee.dto.TraineeDTO;
+import net.ictcampus.baemtli.trainee.dto.TraineeSummaryDTO;
 
 public class TeamMapper {
 
     public static TeamDTO toDto(Team team) {
         return new TeamDTO(
                 team.getId(),
-                team.getName()
+                team.getName(),
+                team.getTrainees().stream()
+                        .map(trainee -> new TraineeSummaryDTO(trainee.getId(), trainee.getFirstName(), trainee.getLastName()))
+                        .toList()
         );
     }
 

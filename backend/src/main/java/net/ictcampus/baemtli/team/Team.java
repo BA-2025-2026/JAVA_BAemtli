@@ -1,10 +1,14 @@
 package net.ictcampus.baemtli.team;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import net.ictcampus.baemtli.trainee.Trainee;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "team")
@@ -21,4 +25,7 @@ public class Team {
     @Column(name = "Name", nullable = false, length = 30)
     private String name;
 
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Trainee> trainees;
 }

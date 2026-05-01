@@ -10,19 +10,14 @@
   padding: 0.8rem 1rem;
 }
 
-.addTeamSection {
-  display: flex;
-  align-items: center;
-  width: 100%;
+.crudButtons {
+  visibility: hidden;
   cursor: pointer;
-}
-
-.addTeamSection button {
   margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
 }
 
-.addTeamSection input {
-  width: 60%;
-  padding: 0.3rem;
-  font-weight: 600;
+.teamTitleCard:hover .crudButtons {
+  visibility: visible;
 }
