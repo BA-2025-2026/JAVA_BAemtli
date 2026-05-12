@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -38,25 +39,36 @@ public class UserService {
     }
 
     public User updateUser(Integer id, UpdateUserDTO dto) {
+        // Try to locate the user
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        // Check if updated username is still available
-        if (dto.getUsername() != null && !dto.getUsername().isBlank()) {
-            if (userRepository.findByUsername(dto.getUsername()).isPresent() && !user.getUsername().equals(dto.getUsername())) {
-                throw new EntityExistsException("Username already taken.");
-            }
-        }
+        // Validate new username
+        Optional.ofNullable(dto.getUsername())
+                .filter(String::isBlank)
+                .filter(n -> n.length() > 50)
+                .ifPresent(n -> {throw new IllegalArgumentException("Username needs to be between 1-50 characters."); });
 
-        if (dto.getTeamId() != null) {
-            user.setTeam(teamRepository.findById(dto.getTeamId()).orElseThrow(() -> new EntityNotFoundException("Team not found")));
-        }
+        // Check if username is still available
+        Optional.ofNullable(dto.getUsername())
+                .filter(n -> userRepository.findByUsername(n).isPresent())
+                .ifPresent(n -> {throw new EntityExistsException("Username already taken."); });
 
-        String encodedPassword = dto.getPassword() != null && !dto.getPassword().isBlank()
-                ? passwordEncoder.encode(dto.getPassword())
-                : user.getPassword();
+        // Check if provided team id exists
+        Optional.ofNullable(dto.getTeamId())
+                .filter(i -> teamRepository.findById(i).isEmpty())
+                .ifPresent(i -> {throw new EntityNotFoundException("No team found for provided team id."); });
 
+        // Encode Password, if provided. Else use existing password hash.
+        String encodedPassword = Optional.ofNullable(dto.getPassword())
+                .filter(p -> !p.isBlank())
+                .map(passwordEncoder::encode)
+                .orElse(user.getPassword());
+
+        // Map values from dto to user object
         UserMapper.updateFromDto(user, dto, encodedPassword);
+
+        // Write to db and return updated user object
         return userRepository.save(user);
     }
 
