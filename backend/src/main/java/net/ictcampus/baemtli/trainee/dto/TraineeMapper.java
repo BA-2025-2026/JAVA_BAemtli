@@ -1,26 +1,33 @@
 package net.ictcampus.baemtli.trainee.dto;
 
+import net.ictcampus.baemtli.team.Team;
 import net.ictcampus.baemtli.trainee.Trainee;
+
+import java.util.Optional;
 
 public class TraineeMapper {
 
     public static TraineeDTO toDto(Trainee trainee) {
+
+        Integer teamId = Optional.ofNullable(trainee.getTeam())
+                .map(Team::getId)
+                .orElse(null);
+
         return new TraineeDTO(
                 trainee.getId(),
                 trainee.getFirstName(),
                 trainee.getLastName(),
-                trainee.getTeam() != null ? trainee.getTeam().getId() : null
+                teamId
         );
     }
 
     public static void updateFromDto(Trainee trainee, UpdateTraineeDTO dto) {
-        // Always check null first, else .isBlank would give NPE if variable is null
-        if (dto.getFirstName() != null && !dto.getFirstName().isBlank()) {
-            trainee.setFirstName(dto.getFirstName());
-        }
+        Optional.ofNullable(dto.getFirstName())
+                .filter(n -> !n.isBlank())
+                .ifPresent(trainee::setFirstName);
 
-        if (dto.getLastName() != null && !dto.getLastName().isBlank()) {
-            trainee.setLastName(dto.getLastName());
-        }
+        Optional.ofNullable(dto.getLastName())
+                .filter(n -> !n.isBlank())
+                .ifPresent(trainee::setLastName);
     }
 }

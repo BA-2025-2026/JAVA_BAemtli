@@ -2,6 +2,8 @@ package net.ictcampus.baemtli.chorecategory.dto;
 
 import net.ictcampus.baemtli.chorecategory.ChoreCategory;
 
+import java.util.Optional;
+
 public class ChoreCategoryMapper {
 
     public static ChoreCategoryDTO toDto(ChoreCategory category) {
@@ -13,12 +15,12 @@ public class ChoreCategoryMapper {
     }
 
     public static void updateFromDto(ChoreCategory category, UpdateChoreCategoryDTO dto) {
-        if (dto.getName() != null && !dto.getName().isBlank()) {
-            category.setName(dto.getName());
-        }
+        Optional.ofNullable(dto.getName())
+                .filter(n -> !n.isBlank())
+                .ifPresent(category::setName);
 
-        if (dto.getDescription() != null) {
-            category.setDescription(dto.getDescription());
-        }
+        Optional.ofNullable(dto.getDescription())
+                .filter(d -> !d.isBlank())
+                .ifPresent(category::setDescription);
     }
 }

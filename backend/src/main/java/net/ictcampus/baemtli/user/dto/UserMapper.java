@@ -1,30 +1,36 @@
 package net.ictcampus.baemtli.user.dto;
 
+import net.ictcampus.baemtli.team.Team;
 import net.ictcampus.baemtli.user.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 public class UserMapper {
 
     public static UserDTO toDto(User user) {
+        Integer teamId = Optional.ofNullable(user.getTeam())
+                .map(Team::getId)
+                .orElse(null);
+
         return new UserDTO(
                 user.getId(),
                 user.getUsername(),
                 user.getRole(),
-                user.getTeam() != null ? user.getTeam().getId() : null
+                teamId
         );
     }
 
     public static void updateFromDto(User user, UpdateUserDTO dto, String encodedPassword) {
-        // Always check null first, else .isBlank would give NPE if variable is null
-        if (dto.getUsername() != null && !dto.getUsername().isBlank()) {
-            user.setUsername(dto.getUsername());
-        }
+        Optional.ofNullable(dto.getUsername())
+                .filter(n -> !n.isBlank())
+                .ifPresent(user::setUsername);
 
-        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            user.setPassword(encodedPassword);
-        }
-        
-        if (dto.getRole() != null) {
-            user.setRole(dto.getRole());
-        }
+        Optional.ofNullable(dto.getPassword())
+                .filter(p -> !p.isBlank())
+                .ifPresent(p -> user.setPassword(encodedPassword));
+
+        Optional.ofNullable(dto.getRole())
+                .ifPresent(user::setRole);
     }
 }

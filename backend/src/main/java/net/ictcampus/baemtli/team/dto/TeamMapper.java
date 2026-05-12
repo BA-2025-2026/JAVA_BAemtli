@@ -4,6 +4,8 @@ import net.ictcampus.baemtli.team.Team;
 import net.ictcampus.baemtli.trainee.dto.TraineeDTO;
 import net.ictcampus.baemtli.trainee.dto.TraineeSummaryDTO;
 
+import java.util.Optional;
+
 public class TeamMapper {
 
     public static TeamDTO toDto(Team team) {
@@ -17,8 +19,8 @@ public class TeamMapper {
     }
 
     public static void updateFromDto(Team team, UpdateTeamDTO dto) {
-        if (dto.getName() != null && !dto.getName().isBlank()) {
-            team.setName(dto.getName());
-        }
+        Optional.ofNullable(dto.getName())
+                .filter(n -> !n.isBlank())
+                .ifPresent(team::setName);
     }
 }
