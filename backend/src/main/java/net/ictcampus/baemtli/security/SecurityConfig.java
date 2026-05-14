@@ -58,7 +58,8 @@ public class SecurityConfig {
                         // .requestMatchers(HttpMethod.GET, "/teams/**").hasAuthority(Permission.TEAM_READ_ALL)
                         .requestMatchers(HttpMethod.POST, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
                         .requestMatchers(HttpMethod.PATCH, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
-                        .requestMatchers(HttpMethod.DELETE, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
+                        .requestMatchers(HttpMethod.DELETE, "/teams/**").permitAll()
+                        // .requestMatchers(HttpMethod.DELETE, "/teams/**").hasAuthority(Permission.TEAM_WRITE_ALL)
 
                         // --- TRAINEES ---
                         // Hier brauchen wir hasAnyAuthority, da sowohl Coaches (:all) als auch Lernende/Teamverantwortliche (:team) Lesezugriff haben

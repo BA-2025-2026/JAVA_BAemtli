@@ -1,0 +1,67 @@
+/* Gray out the whole page, display modal on top */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--white);
+  padding: 1.8rem;
+  border-radius: var(--borderradius);
+  width: 400px;
+  max-width: 90vw;
+}
+
+.modal h2 {
+  margin-bottom: 1rem;
+}
+
+.modal p {
+  text-align: justify;
+  margin-bottom: 0.6rem;
+}
+
+.highlight {
+  font-weight: 800;
+  color: var(--error);
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.cancelBtn {
+  color: var(--text-primary);
+}
+
+.deleteBtn {
+  color: var(--white);
+  background-color: var(--error);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.deleteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -8,6 +8,7 @@
   border-radius: var(--borderradius);
   box-shadow: var(--shadow);
   padding: 0.8rem 1rem;
+  margin: 3rem 0 1rem 0;
 }
 
 .crudButtons {
@@ -20,4 +21,33 @@
 
 .teamTitleCard:hover .crudButtons {
   visibility: visible;
+}
+
+.noEntityInfo {
+  background-color: var(--brown);
+  box-shadow: none;
+  margin: 0;
+  padding: 1rem 1rem;
+}
+
+.traineeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  row-gap: 1rem;
+}
+
+.addTraineeSection {
+  width: 200px;
+  background-color: var(--white);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: var(--borderradius);
+  padding: 0.8rem 1rem;
+
+  cursor: pointer;
 }

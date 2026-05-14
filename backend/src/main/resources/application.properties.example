@@ -1,17 +1,10 @@
-# Application Properties to set db connection, db user, db password and others.
-
 # API Versioning
 server.servlet.context-path=/api/v1
-
-# Please replace values 'pleasechange' with the credentials of your local MySQL 8 db, if you plan
-# to run the app in your IDE.
-
-# If you plan to deploy with docker compose, the variables ${EXAMPLE_VARIABLE} will be filled.
-
+# Application name
 spring.application.name=baemtli
 
 # Syntax of variables: ${ENV_VARIABLE_LOADED_FROM_DOTENV:yourOwnFallbackValue}
-spring.datasource.url=jdbc:mysql://${DB_HOST:localhost}:3306/Baemtli
+spring.datasource.url=jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:baemtli}
 spring.datasource.username=${DB_USER:pleasechange}
 spring.datasource.password=${DB_PASSWORD:pleasechange}
 

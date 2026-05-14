@@ -1,0 +1,22 @@
+.traineeCard {
+  width: 200px;
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border-radius: var(--borderradius);
+  padding: 0.8rem 1rem;
+}
+
+.crudButtons {
+  visibility: hidden;
+  cursor: pointer;
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.traineeCard:hover .crudButtons {
+  visibility: visible;
+}

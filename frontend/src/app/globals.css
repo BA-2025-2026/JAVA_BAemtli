@@ -5,17 +5,18 @@
   --error: #d32f2f;
 
   --white: white;
+  --brown: #ebebeb;
 
   --shadow: 3px 2px 30px rgba(0, 0, 0, 0.1);
   --borderradius: 0.8rem;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 html {
   height: 100%;
@@ -87,11 +88,11 @@ h1 {
   margin-bottom: 1rem;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
 
 /* Icons: Material Symbols Google */
 .material-symbols-outlined {
