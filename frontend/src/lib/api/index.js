@@ -7,7 +7,18 @@ async function handleResponse(response) {
     error.response = response.status;
     throw error;
   }
-  return response.json();
+
+  // No parsing if response is empty (for example status code 204)
+  if (
+    response.status === 204 ||
+    response.headers.get("content-length") === "0"
+  ) {
+    return null;
+  }
+
+  // Parse answer
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 }
 
 /* GET */
