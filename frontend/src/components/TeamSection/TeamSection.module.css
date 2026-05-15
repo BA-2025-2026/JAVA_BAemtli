@@ -23,13 +23,6 @@
   visibility: visible;
 }
 
-.noEntityInfo {
-  background-color: var(--brown);
-  box-shadow: none;
-  margin: 0;
-  padding: 1rem 1rem;
-}
-
 .traineeList {
   display: flex;
   flex-wrap: wrap;

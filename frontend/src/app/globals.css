@@ -106,3 +106,12 @@ h1 {
   display: inline-block;
   line-height: 1;
 }
+
+/* Card Sytle for when no entities yet (e.g. no teams, no trainees etc.) */
+.noEntityInfo {
+  border-radius: var(--borderradius);
+  background-color: var(--brown);
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+}

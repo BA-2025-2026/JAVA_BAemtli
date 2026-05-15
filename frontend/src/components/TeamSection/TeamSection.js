@@ -1,35 +1,18 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
+import { deleteTeamAction } from "@/actions/teamActions";
 import TraineeCard from "../TraineeCard/TraineeCard";
 import DeleteModal from "../DeleteModal/DeleteModal";
-import { createUpdateTeam, deleteTeamAction } from "@/actions/teamActions";
+import TeamForm from "../TeamForm/TeamForm";
 import styles from "./TeamSection.module.css";
-import { useEffect } from "react";
 
 export default function TeamSection({ team }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditingTeam, setIsEditingTeam] = useState(false);
 
-  const [state, formAction, isPending] = useActionState(createUpdateTeam, {
-    id: team.id,
-    success: false,
-  });
-
-  // If editing team was successful, leave editing state
-  useEffect(() => {
-    if (state?.success === true) {
-      setIsEditingTeam(false);
-    }
-  }, [state?.success, state]);
-
-  const handleStartEdit = () => setIsEditingTeam(true);
-  const handleCancelEdit = () => setIsEditingTeam(false);
-
   // Delete team handler
-  const handleDeleteClick = () => {
-    setIsModalOpen(true);
-  };
+  const handleDeleteClick = () => setIsModalOpen(true);
 
   // Delete team confirmation modal handler
   const handleConfirmDelete = async () => {
@@ -52,7 +35,7 @@ export default function TeamSection({ team }) {
             <div className={styles.crudButtons}>
               <span
                 className="material-symbols-outlined"
-                onClick={handleStartEdit}
+                onClick={() => setIsEditingTeam(true)}
               >
                 edit
               </span>
@@ -65,36 +48,11 @@ export default function TeamSection({ team }) {
             </div>
           </>
         ) : (
-          <>
-            <form
-              key={isEditingTeam ? "editing" : "idle"}
-              action={formAction}
-              noValidate
-              className={styles.editTeamForm}
-            >
-              <input type="hidden" name="id" value={team.id} />
-              <input
-                name="teamName"
-                autoFocus
-                defaultValue={state?.fields?.teamName ?? team.name}
-                className={state?.errors?.teamName ? styles.inputError : ""}
-              />
-              <button type="submit" disabled={isPending}>
-                <span className="material-symbols-outlined">
-                  {isPending ? "sync" : "check"}
-                </span>
-              </button>
-              <button type="button" onClick={handleCancelEdit}>
-                <span className="material-symbols-outlined">close</span>
-              </button>
-              {/* Form Error Message */}
-              {state?.errors?.teamName && (
-                <p className={styles.errorMessage}>
-                  {state.errors.teamName[0]}
-                </p>
-              )}
-            </form>
-          </>
+          <TeamForm
+            initialData={{ id: team.id, name: team.name }}
+            onSuccess={() => setIsEditingTeam(false)}
+            onCancel={() => setIsEditingTeam(false)}
+          />
         )}
       </div>
       <div className={styles.traineeList}>
@@ -102,8 +60,8 @@ export default function TeamSection({ team }) {
           <TraineeCard key={trainee.id} trainee={trainee} />
         ))}
         {team.trainees.length === 0 && (
-          <div className={`${styles.teamTitleCard} ${styles.noEntityInfo}`}>
-            <h4>Noch keine Lernenden vorhanden.</h4>
+          <div className="noEntityInfo">
+            <p>Noch keine Lernenden vorhanden.</p>
           </div>
         )}
         <div className={styles.addTraineeSection}>

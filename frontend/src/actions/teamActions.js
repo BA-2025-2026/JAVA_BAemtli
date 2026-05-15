@@ -2,16 +2,13 @@
 
 import TeamsAPI from "@/lib/api/Teams";
 import { revalidatePath } from "next/cache";
-import { success, z } from "zod";
-
-const teamSchema = {
-  teamName: "",
-};
+import { z } from "zod";
 
 const teamValidationScheama = z.object({
   teamName: z
     .string()
-    .min(2, "Teamname muss mindestens zwei Zeichen lang sein."),
+    .max(30, "Teamname darf maximal 30 Zeichen lang sein.")
+    .min(1, "Teamname darf nicht leer sein."),
 });
 
 export async function createUpdateTeam(prevState, formData) {
@@ -66,7 +63,8 @@ export async function createUpdateTeam(prevState, formData) {
 }
 
 export async function deleteTeamAction(id) {
-  // verify session first?
+  // Verify session
+
   // Delete Team (hand in JWT Token later)
   await TeamsAPI.delete(id);
   revalidatePath("/teams");

@@ -19,7 +19,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 INSERT INTO `team` (`ID_Team`, `Name`) VALUES
                                            (1, 'Alpha Dragons'),
                                            (2, 'Beta Bytes'),
-                                           (3, 'Gamma Gladiators');
+                                           (3, 'Gamma Gladiators'),
+(4, 'Team with no Trainees');
 
 -- 2. create trainees
 INSERT INTO `trainee` (`FirstName`, `LastName`, `Team_ID`) VALUES
