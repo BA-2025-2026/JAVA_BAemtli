@@ -5,7 +5,6 @@ import styles from "./TeamWrapper.module.css";
 export default async function ActivityWrapper() {
   // Fetch Teams
   const teams = await TeamsAPI.readAll();
-  console.log(teams);
 
   return (
     <section>

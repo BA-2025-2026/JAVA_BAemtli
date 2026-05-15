@@ -73,6 +73,23 @@ export async function putJSON(url, body = {}, accessToken = null) {
   return handleResponse(response);
 }
 
+/* PATCH */
+export async function patchJSON(url, body = {}, accessToken = null) {
+  const options = {
+    method: "PATCH",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
+
+  if (accessToken) {
+    options.headers["Authorization"] = `Bearer ${accessToken}`;
+  }
+  const response = await fetch(url, options);
+  return handleResponse(response);
+}
+
 /* DELETE */
 export async function deleteJSON(url, accessToken = null) {
   const options = {

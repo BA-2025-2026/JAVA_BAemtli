@@ -1,4 +1,4 @@
-import { getJSON, postJSON, putJSON, deleteJSON, BASE_URL } from ".";
+import { getJSON, postJSON, patchJSON, deleteJSON, BASE_URL } from ".";
 
 const URL = `${BASE_URL}/teams`;
 
@@ -9,11 +9,11 @@ const TeamsAPI = {
   read(id, accessToken) {
     return getJSON(`${URL}/${id}`, accessToken); //
   },
-  create(activity, accessToken) {
-    return postJSON(URL, activity, accessToken);
+  create(team, accessToken) {
+    return postJSON(URL, team, accessToken);
   },
-  update(id, activity, accessToken) {
-    return putJSON(`${URL}/${id}`, activity, accessToken);
+  update(id, team, accessToken) {
+    return patchJSON(`${URL}/${id}`, team, accessToken);
   },
   delete(id, accessToken) {
     return deleteJSON(`${URL}/${id}`, accessToken);
