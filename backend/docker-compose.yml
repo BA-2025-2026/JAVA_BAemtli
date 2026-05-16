@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: baemtli-backend-local
+    image: baemtli-backend:1.0.0-4
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+    # Erlaubt der App genügend Zeit, auf die Azure Serverless DB zu warten
+    restart: on-failure
