@@ -1,0 +1,36 @@
+# Abhängigkeiten
+node_modules
+.pnpm-store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js Build-Ordner und Cache
+.next
+out
+
+# Lokale Umgebungsvariablen
+.env*.local
+
+# IDEs und Editoren
+.vscode
+.idea
+*.suo
+*.ntvs
+*.njsproj
+*.sln
+*.sw?
+
+# Betriebssystem-Dateien
+.DS_Store
+Thumbs.db
+
+# Versionskontrolle
+.git
+.gitignore
+.github
+
+# Docker-spezifische Dateien (optional, da sie im Container meist nicht gebraucht werden)
+Dockerfile
+.dockerignore
+README.md

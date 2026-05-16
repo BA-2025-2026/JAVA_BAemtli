@@ -1,0 +1,19 @@
+# Secrets ignorieren
+src/main/resources/application.properties
+
+# Build-Ordner ignorieren (spart enorm Zeit beim image builden)
+target/
+build/
+.gradle/
+.mvn/
+
+# Git und IDEs ignorieren
+.git
+.gitignore
+.idea
+.vscode
+
+# Docker-spezifische Dateien (optional, da sie im Container meist nicht gebraucht werden)
+Dockerfile
+.dockerignore
+README.md
