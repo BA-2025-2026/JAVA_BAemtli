@@ -1,29 +1,33 @@
-# --- STAGE 1: Build ---
-FROM node:20-alpine AS builder
+# Stage 1: Dependencies
+FROM node:24-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-
-# Abhängigkeiten kopieren und installieren
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
-# Quellcode kopieren und die App bauen
+# Stage 2: Build
+FROM node:24-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-# --- STAGE 2: Run ---
-FROM node:20-alpine AS runner
+# Stage 3: Runner (optimized for standalone)
+FROM node:24-alpine AS runner
 WORKDIR /app
-
 ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
 
-# Nur die für den Betrieb notwendigen Standalone-Dateien kopieren
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Add a user to improve safety
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy only necessary files from standalone output
 COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+USER nextjs
 EXPOSE 3000
+ENV PORT=3000
 
-# Next.js startet im Standalone-Modus über den kopierten Server
 CMD ["node", "server.js"]
