@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { deleteTeamAction } from "@/actions/teamActions";
-import TraineeCard from "../TraineeCard/TraineeCard";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import TeamForm from "../TeamForm/TeamForm";
 import styles from "./TeamSection.module.css";
+import TraineesSection from "../TraineesSection/TraineesSection";
 
 export default function TeamSection({ team }) {
+  // Delete Team Confirmation Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Edit Team State
   const [isEditingTeam, setIsEditingTeam] = useState(false);
 
   // Delete team handler
@@ -55,23 +57,7 @@ export default function TeamSection({ team }) {
           />
         )}
       </div>
-      <div className={styles.traineeList}>
-        {team.trainees.map((trainee) => (
-          <TraineeCard key={trainee.id} trainee={trainee} />
-        ))}
-        {team.trainees.length === 0 && (
-          <div className="noEntityInfo">
-            <p>Noch keine Lernenden vorhanden.</p>
-          </div>
-        )}
-        <div className={styles.addTraineeSection}>
-          <div>
-            <h4>Lernende*r</h4>
-            <h4>hinzufügen</h4>
-          </div>
-          <span className="material-symbols-outlined">add</span>
-        </div>
-      </div>
+      <TraineesSection teamId={team.id} trainees={team.trainees} />
     </>
   );
 }

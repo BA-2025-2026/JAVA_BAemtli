@@ -65,10 +65,14 @@ public class SecurityConfig {
 
                         // --- TRAINEES ---
                         // Hier brauchen wir hasAnyAuthority, da sowohl Coaches (:all) als auch Lernende/Teamverantwortliche (:team) Lesezugriff haben
-                        .requestMatchers(HttpMethod.GET, "/trainees/**").hasAnyAuthority(Permission.TRAINEE_READ_ALL, Permission.TRAINEE_READ_TEAM)
-                        .requestMatchers(HttpMethod.POST, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
-                        .requestMatchers(HttpMethod.PATCH, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
-                        .requestMatchers(HttpMethod.DELETE, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
+                        .requestMatchers(HttpMethod.GET, "/trainees/**").permitAll()
+                        // .requestMatchers(HttpMethod.GET, "/trainees/**").hasAnyAuthority(Permission.TRAINEE_READ_ALL, Permission.TRAINEE_READ_TEAM)
+                        .requestMatchers(HttpMethod.POST, "/trainees/**").permitAll()
+                        //.requestMatchers(HttpMethod.POST, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
+                        .requestMatchers(HttpMethod.PATCH, "/trainees/**").permitAll()
+                        //.requestMatchers(HttpMethod.PATCH, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
+                        .requestMatchers(HttpMethod.DELETE, "/trainees/**").permitAll()
+                        //.requestMatchers(HttpMethod.DELETE, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
 
                         // --- MONATSZUTEILUNGEN ---
                         .requestMatchers(HttpMethod.GET, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_READ_ALL)
