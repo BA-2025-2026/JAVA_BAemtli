@@ -20,6 +20,7 @@ public class ChoreCategory {
     @Column(name = "Name", nullable = false, length = 30)
     private String name;
 
-    @Column(name = "Description", columnDefinition = "LONGTEXT")
+    @Lob
+    @Column(name = "Description")
     private String description;
 }

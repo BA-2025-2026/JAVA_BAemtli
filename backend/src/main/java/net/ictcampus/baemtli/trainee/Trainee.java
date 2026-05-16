@@ -27,7 +27,6 @@ public class Trainee {
     private String lastName;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Team_ID", nullable = false)
     private Team team;
 }

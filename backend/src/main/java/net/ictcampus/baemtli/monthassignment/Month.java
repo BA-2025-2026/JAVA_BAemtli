@@ -14,6 +14,6 @@ public class Month {
     @Column(name = "Month")
     private Integer month;
 
-    @Column(name = "Year", nullable = false, columnDefinition = "YEAR")
+    @Column(name = "Year", nullable = false)
     private Integer year;
 }
