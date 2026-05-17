@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     container_name: baemtli-backend-local
-    image: baemtli-backend:1.0.0-5
+    image: baemtli-backend:1.0.0-6
     ports:
       - "8080:8080"
     env_file:
