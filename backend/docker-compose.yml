@@ -3,12 +3,17 @@ version: '3.8'
 services:
   backend:
     container_name: baemtli-backend-local
-    image: baemtli-backend:1.0.0-4
+    image: baemtli-backend:1.0.0-5
     ports:
       - "8080:8080"
     env_file:
       - .env
     environment:
       - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://${DB_HOST}:1433;databaseName=${DB_NAME};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=60;
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.SQLServerDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.SQLServerDialect
     # Erlaubt der App genügend Zeit, auf die Azure Serverless DB zu warten
     restart: on-failure
