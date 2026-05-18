@@ -74,17 +74,17 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: login to azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: update Azure container app
         uses: azure/container-apps-deploy-action@v1
         with:
+          # AuthN
+          registryUrl: ${{ env.REGISTRY }}
+          registryUsername: ${{ github.actor }}
+          registryPassword: ${{ secrets.GHCR_AZURE_ACCESS_TOKEN }}
+
           resourceGroup: dev-rg-baemtli
           containerAppName: baemtli-backend
-          imageToDeploy: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-backend:sha-${{ steps.meta.outputs.version }}
+          imageToDeploy: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-backend:${{ steps.meta.outputs.version }}
 
   # =================================================================
   # JOB 3: FRONTEND
@@ -126,14 +126,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: login to azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: update Azure container app
         uses: azure/container-apps-deploy-action@v1
         with:
+          # AuthN
+          registryUrl: ${{ env.REGISTRY }}
+          registryUsername: ${{ github.actor }}
+          registryPassword: ${{ secrets.GHCR_AZURE_ACCESS_TOKEN }}
+
           resourceGroup: dev-rg-baemtli
           containerAppName: baemtli-frontend
-          imageToDeploy: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-frontend:sha-${{ steps.meta.outputs.version }}
+          imageToDeploy: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-frontend:${{ steps.meta.outputs.version }}
