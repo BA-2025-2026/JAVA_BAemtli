@@ -1,0 +1,68 @@
+name: Build, push, deploy to Azure
+
+on:
+  push:
+    branches: [ main ]
+
+# env variables
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/JAVA_BAemtli
+  AZURE_CONTAINER_APP_NAME: baemtli-backend
+  AZURE_RESOURCE_GROUP: dev-rg-baemtli
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    # grant package write permissions to github
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Clone repo
+      - name: clone repo
+        uses: actions/checkout@v4
+
+      # Login to container registry (github automatically generates access token)
+      - name: log in to ghcr
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Metadata: Tags (Commit-SHA)
+      - name: extract docker meta data
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,format=short
+
+      # Build and push image
+      - name: build and push docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: . # Wo liegt das Dockerfile? (Aktuell im Hauptverzeichnis)
+          push: true  # Ja, schiebe es direkt in die Registry hoch!
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+
+      # Azure login (credentials from github secrets)
+      - name: login to azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Azure: Load and deploy fresh image
+      - name: update Azure container app
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
+          containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
+          # Path to image, including commit-sha tag
+          imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ steps.meta.outputs.version }}
