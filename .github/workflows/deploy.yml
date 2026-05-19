@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  REGISTRY: ghcr.io
+  REGISTRY: jve161514-g3d8f6gsf6dna2e9.azurecr.io
 
 jobs:
   # =================================================================
@@ -51,18 +51,18 @@ jobs:
       - name: clone repo
         uses: actions/checkout@v4
 
-      - name: log in to ghcr
+      - name: Log in to Azure Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: extract docker meta data
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-backend
+          images: ${{ env.REGISTRY }}/baemtli-backend
           tags: type=sha,format=short
 
       - name: build and push docker image
@@ -77,14 +77,9 @@ jobs:
       - name: update Azure container app
         uses: azure/container-apps-deploy-action@v1
         with:
-          # AuthN
-          registryUrl: ${{ env.REGISTRY }}
-          registryUsername: ${{ github.actor }}
-          registryPassword: ${{ secrets.GHCR_AZURE_ACCESS_TOKEN }}
-
           resourceGroup: dev-rg-baemtli
           containerAppName: baemtli-backend
-          imageToDeploy: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-backend:${{ steps.meta.outputs.version }}
+          imageToDeploy: ${{ env.REGISTRY }}/baemtli-backend:${{ steps.meta.outputs.tags }}
 
   # =================================================================
   # JOB 3: FRONTEND
@@ -103,18 +98,18 @@ jobs:
       - name: clone repo
         uses: actions/checkout@v4
 
-      - name: log in to ghcr
+      - name: Log in to Azure Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: extract docker meta data
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-frontend
+          images: ${{ env.REGISTRY }}/baemtli-frontend
           tags: type=sha,format=short
 
       - name: build and push docker image
@@ -129,11 +124,6 @@ jobs:
       - name: update Azure container app
         uses: azure/container-apps-deploy-action@v1
         with:
-          # AuthN
-          registryUrl: ${{ env.REGISTRY }}
-          registryUsername: ${{ github.actor }}
-          registryPassword: ${{ secrets.GHCR_AZURE_ACCESS_TOKEN }}
-
           resourceGroup: dev-rg-baemtli
           containerAppName: baemtli-frontend
-          imageToDeploy: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-frontend:${{ steps.meta.outputs.version }}
+          imageToDeploy: ${{ env.REGISTRY }}/baemtli-frontend:${{ steps.meta.outputs.tags }}
