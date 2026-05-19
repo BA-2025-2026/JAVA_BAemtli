@@ -1,0 +1,13 @@
+import styles from "./page.module.css";
+
+export default function Login() {
+  return (
+    <div className={styles.loginContainer}>
+      <div className={styles.loginCard}>
+        <h1>Ämtliplantool</h1>
+        <p>des ICT-Campus</p>
+        <h1>Login</h1>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,19 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 18rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background-color: rebeccapurple;
+}

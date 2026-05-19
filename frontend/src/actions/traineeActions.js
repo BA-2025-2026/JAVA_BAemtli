@@ -19,6 +19,11 @@ const traineeValidationScheama = z.object({
 
 export async function createUpdateTrainee(prevState, formData) {
   // Verify Session
+  const session = await verifySession();
+
+  if (!session) {
+    redirect("/login");
+  }
 
   // Parse and Validate
   const data = Object.fromEntries(formData);
