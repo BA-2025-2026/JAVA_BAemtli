@@ -13,7 +13,6 @@ jobs:
   # =================================================================
   changes:
     runs-on: ubuntu-latest
-    # Define outputs for this action
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
@@ -25,7 +24,6 @@ jobs:
         id: filter
         uses: dorny/paths-filter@v3
         with:
-          # Define rules
           filters: |
             backend:
               - 'backend/**'
@@ -39,9 +37,8 @@ jobs:
   # =================================================================
   backend:
     name: Backend Pipeline
-    needs: changes # wait for job 'changes' to complete first
+    needs: changes
     if: ${{ needs.changes.outputs.backend == 'true' }}
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -79,7 +76,9 @@ jobs:
         with:
           resourceGroup: dev-rg-baemtli
           containerAppName: baemtli-backend
-          imageToDeploy: ${{ env.REGISTRY }}/baemtli-backend:${{ steps.meta.outputs.tags }}
+          imageToDeploy: ${{ steps.meta.outputs.tags }}
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
 
   # =================================================================
   # JOB 3: FRONTEND
@@ -88,7 +87,6 @@ jobs:
     name: Frontend Pipeline
     needs: changes
     if: ${{ needs.changes.outputs.frontend == 'true' }}
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -126,4 +124,6 @@ jobs:
         with:
           resourceGroup: dev-rg-baemtli
           containerAppName: baemtli-frontend
-          imageToDeploy: ${{ env.REGISTRY }}/baemtli-frontend:${{ steps.meta.outputs.tags }}
+          imageToDeploy: ${{ steps.meta.outputs.tags }}
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
