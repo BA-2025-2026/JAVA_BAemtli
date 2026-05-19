@@ -4,46 +4,60 @@ import { z } from "zod";
 import UsersApi from "@/lib/api/Users";
 import { createSession, verifySession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 // Schema for validating the data of the fields from the form.
-const schema = z.object({
-  email: z.email("Please enter a valid email address"),
-  password: z.string().trim(),
+const loginSchema = z.object({
+  username: z.email("Bitte gebe eine valide E-Mail ein."),
+  password: z.string().trim().min(1, "Passwort darf nicht leer sein."),
 });
 
 /**
  * Login function
  */
-export async function loginAction(state, formData) {
+export async function loginAction(prevState, formData) {
   const data = Object.fromEntries(formData);
-  const fields = schema.safeParse(data);
+  const validated = loginSchema.safeParse(data);
 
   // remove password from data to avoid sending it back to the client. User should re-enter it.
   delete data.password;
-  console.log(fields.data);
-  if (!fields.success) {
+
+  if (!validated.success) {
     return {
-      url: state?.url,
-      data,
-      errors: fields.error.flatten().fieldErrors,
+      url: prevState?.url,
+      fields: data,
+      errors: validated.error.flatten().fieldErrors,
+      success: false,
     };
   }
 
   try {
-    const data = await UsersApi.login(fields.data); // Send a POST request to the API to log in the user
+    console.log("LOG IN USER");
+    console.log(validated.data);
+    const data = await UsersApi.login(validated.data); // Send a POST request to the API to log in the user
+    console.log("RESPONSE:");
+    console.log(data);
     await createSession(data.accessToken); // Create a new session, storing the token in a cookie
+    redirect(prevState?.url ?? "/profile"); // Redirect the user to the page they were originally trying to access.
   } catch (error) {
+    let errorMessage = "An unexpected error occurred.";
+
+    // Evaluate 4xx client errors
+    if (error.response >= 400 && error.response < 500) {
+      errorMessage = "Falsche E-Mail oder Passwort. Bitte versuche es erneut.";
+    }
+    // Evaluate 5xx server errors
+    else if (error.response >= 500) {
+      errorMessage =
+        "Technischer Fehler während dem Login. Bitte versuche es später erneut.";
+    }
+
     return {
-      url: state?.url,
+      success: false,
+      url: prevState?.url,
       data,
-      message:
-        error.response === 400
-          ? "Invalid email or password. Please try again."
-          : "Login failed due to a technical issue. Please try again later.",
+      message: errorMessage,
     };
   }
-  redirect(state?.url ?? "/profile"); // Redirect the user to the page they were originally trying to access.
 }
 
 /**

@@ -9,11 +9,58 @@
 
 .loginCard {
   width: 100%;
-  max-width: 18rem;
+  max-width: 21rem;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  background-color: rebeccapurple;
+  text-align: center;
+
+  background-color: var(--white);
+  border-radius: var(--borderradius);
+  box-shadow: var(--shadow);
+
+  padding: 1.8rem;
+}
+
+.loginCard h1 {
+  margin-bottom: 0.2rem;
+}
+
+.loginCard p {
+  margin-bottom: 4.5rem;
+}
+
+.loginCard h4 {
+  margin-bottom: 3rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loginForm input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background-color: var(--background);
+  border-radius: var(--borderradius);
+}
+
+.loginForm button {
+  width: 8rem;
+  background-color: var(--background);
+  border-radius: var(--borderradius);
+
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.loginForm p {
+  color: var(--error);
+  margin: -0.4rem 0 0.5rem 0;
 }

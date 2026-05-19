@@ -16,6 +16,10 @@ async function handleResponse(response) {
     return null;
   }
 
+  console.log("HANDLE RESPONSE");
+  console.log(response);
+  console.log(response.text);
+
   // Parse answer
   const text = await response.text();
   return text ? JSON.parse(text) : null;

@@ -1,3 +1,4 @@
+import LoginForm from "@/components/LoginForm/LoginForm";
 import styles from "./page.module.css";
 
 export default function Login() {
@@ -6,7 +7,9 @@ export default function Login() {
       <div className={styles.loginCard}>
         <h1>Ämtliplantool</h1>
         <p>des ICT-Campus</p>
-        <h1>Login</h1>
+        <h4>Willkommen zurück.</h4>
+
+        <LoginForm />
       </div>
     </div>
   );

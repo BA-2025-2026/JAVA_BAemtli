@@ -74,3 +74,37 @@ INSERT INTO [chorecategory] ([Name], [Description]) VALUES
                                                         ('Müll', 'Entsorgung von Papier, Alu und Restmüll'),
                                                         ('Pflanzen', 'Giessen der Büropflanzen');
 GO
+
+
+
+DELETE FROM [user];
+INSERT INTO [user] (Username, PasswordHash, [Role], AuthSource, Team_ID)
+VALUES
+    (
+        'test@localhost.local',
+        '$2a$10$kojKjABnoiyjFz5rHEu09uVzFk065ubTwVYmC726aSF6LbuwGqKXe', -- BCrypt für 'passwort'
+        'Coach',
+        'LOCAL',
+        1
+    ),
+    (
+        'coach.michi',
+        '$2a$10$kojKjABnoiyjFz5rHEu09uVzFk065ubTwVYmC726aSF6LbuwGqKXe',
+        'Teamresponsible',
+        'LOCAL',
+        1
+    ),
+    (
+        'user.anna',
+        '$2a$10$kojKjABnoiyjFz5rHEu09uVzFk065ubTwVYmC726aSF6LbuwGqKXe',
+        'Teammember',
+        'LOCAL',
+        1
+    ),
+    (
+        'user.ben',
+        '$2a$10$kojKjABnoiyjFz5rHEu09uVzFk065ubTwVYmC726aSF6LbuwGqKXe',
+        'Coach',
+        'LOCAL',
+        1
+    );

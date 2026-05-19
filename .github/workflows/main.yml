@@ -2,7 +2,7 @@ name: Build and push
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   # =================================================================
@@ -38,9 +38,6 @@ jobs:
     uses: ./.github/workflows/deploy-service.yml
     with:
       service_name: backend
-    secrets:
-      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
   # =================================================================
   # JOB 3: FRONTEND (Ruft dieselbe Vorlage auf)
@@ -51,6 +48,3 @@ jobs:
     uses: ./.github/workflows/deploy-service.yml
     with:
       service_name: frontend
-    secrets:
-      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
