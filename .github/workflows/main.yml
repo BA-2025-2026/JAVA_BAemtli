@@ -1,0 +1,56 @@
+name: Build and push
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  # =================================================================
+  # JOB 1: Detector
+  # =================================================================
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+
+      - name: Check for changes in folders
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - '.github/workflows/**'
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/**'
+
+  # =================================================================
+  # JOB 2: BACKEND (Ruft die Vorlage auf)
+  # =================================================================
+  backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service_name: backend
+    secrets:
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+
+  # =================================================================
+  # JOB 3: FRONTEND (Ruft dieselbe Vorlage auf)
+  # =================================================================
+  frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service_name: frontend
+    secrets:
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

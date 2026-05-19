@@ -1,0 +1,48 @@
+# Reusable component to build and deploy either frontend or backend (dynamically passed in with params)
+name: Build and Deploy Service
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+
+      - name: extract docker meta data
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/baemtli-${{ inputs.service_name }}
+          tags: type=sha,format=short
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: build and push docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ inputs.service_name }}
+          file: ./${{ inputs.service_name }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      # TODO: Automate Azure Container App revision
