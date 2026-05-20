@@ -8,7 +8,7 @@ import { verifySession } from "./lib/session";
  */
 
 // Pfade, die NICHT geschützt werden sollen
-const publicRoutes = ["/login", "/register", "/favicon.ico", "/teams"];
+const publicRoutes = ["/login", "/register", "/favicon.ico"];
 
 export async function proxy(request) {
   const { pathname } = request.nextUrl;

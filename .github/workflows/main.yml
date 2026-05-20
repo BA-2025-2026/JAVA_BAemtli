@@ -3,6 +3,9 @@ name: Build and push
 on:
   push:
     branches: [main]
+  permissions:
+    contents: read
+    packages: write
 
 jobs:
   # =================================================================

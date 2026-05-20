@@ -37,7 +37,6 @@ export async function loginAction(prevState, formData) {
     console.log("RESPONSE:");
     console.log(data);
     await createSession(data.accessToken); // Create a new session, storing the token in a cookie
-    redirect(prevState?.url ?? "/profile"); // Redirect the user to the page they were originally trying to access.
   } catch (error) {
     let errorMessage = "An unexpected error occurred.";
 
@@ -58,6 +57,8 @@ export async function loginAction(prevState, formData) {
       message: errorMessage,
     };
   }
+  // Redirect needs to be outside of try catch
+  redirect(prevState?.url ?? "/"); // Redirect the user to the page they were originally trying to access.
 }
 
 /**

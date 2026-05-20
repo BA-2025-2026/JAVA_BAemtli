@@ -1,7 +1,7 @@
 import TeamsAPI from "@/lib/api/Teams";
 import TeamFeed from "@/components/TeamFeed/TeamFeed";
 
-export default async function ActivityWrapper() {
+export default async function TeamWrapper() {
   // Fetch Teams
   const teams = await TeamsAPI.readAll();
 
