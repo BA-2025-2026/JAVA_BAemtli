@@ -2,6 +2,7 @@
 import styles from "./Sidebar.module.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logoutAction } from "@/actions/userActions";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -85,7 +86,12 @@ export default function Sidebar() {
           <p>Eingeloggt als</p>
           <h4>Coach</h4>
         </div>
-        <span className="material-symbols-outlined">logout</span>
+        <span
+          className={`${styles.logoutButton} material-symbols-outlined `}
+          onClick={logoutAction}
+        >
+          logout
+        </span>
       </div>
     </nav>
   );
