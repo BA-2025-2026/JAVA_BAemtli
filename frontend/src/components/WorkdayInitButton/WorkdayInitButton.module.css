@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  max-width: 34rem;
+}
+
+.initButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--white);
+  border-radius: var(--borderradius);
+  box-shadow: var(--shadow);
+  padding: 0.8rem 1rem;
+}
+
+.initButtonText {
+  white-space: nowrap;
+}
+
+.actionHint {
+  text-align: right;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--text-primary);
+  max-width: 32rem;
+}

@@ -45,3 +45,7 @@ INSERT INTO `chorecategory` (`Name`, `Description`) VALUES
                                                         ('Küche', 'Abwaschen und Oberflächen reinigen'),
                                                         ('Müll', 'Entsorgung von Papier, Alu und Restmüll'),
                                                         ('Pflanzen', 'Giessen der Büropflanzen');
+
+
+select *
+from workday;

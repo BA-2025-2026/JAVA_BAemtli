@@ -171,9 +171,22 @@ function getSchoolYearMonths(schoolYearStartYear) {
   });
 }
 
+function getUtcDateKey(date) {
+  return [
+    String(date.getUTCFullYear()).padStart(4, "0"),
+    String(date.getUTCMonth() + 1).padStart(2, "0"),
+    String(date.getUTCDate()).padStart(2, "0"),
+  ].join("-");
+}
+
+function createWorkdayDateSet(workdays) {
+  return new Set(workdays.map((workday) => workday.date));
+}
+
 export {
   MONTHS,
   WEEKDAYS,
+  createWorkdayDateSet,
   createUtcDate,
   getFirstWorkdayOfMonth,
   getIsoWeekNumber,
@@ -183,5 +196,6 @@ export {
   getSchoolYearMonths,
   getSchoolYearStartYear,
   getZurichDateParts,
+  getUtcDateKey,
   getWeekdayIndex,
 };

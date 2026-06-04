@@ -1,7 +1,16 @@
 import styles from "./WorkdayMonth.module.css";
-import { WEEKDAYS, getMonthWeeks } from "@/lib/dateUtils/WorkdaysCalendarUtils";
+import {
+  WEEKDAYS,
+  getMonthWeeks,
+  getUtcDateKey,
+} from "@/lib/dateUtils/WorkdaysCalendarUtils";
 
-export default function WorkdayMonth({ year, monthIndex, monthName }) {
+export default function WorkdayMonth({
+  year,
+  monthIndex,
+  monthName,
+  workdayDateSet,
+}) {
   const weeks = getMonthWeeks(year, monthIndex);
 
   return (
@@ -26,15 +35,19 @@ export default function WorkdayMonth({ year, monthIndex, monthName }) {
             className={styles.weekRow}
           >
             <div className={`${styles.cell} ${styles.kwCell}`}>{week.kw}</div>
-            {week.days.map((day, index) => (
-              <div
-                key={`${week.kw}-${index}`}
-                className={`${styles.cell} ${day ? styles.dayCell : styles.emptyCell}`}
-                aria-hidden={!day}
-              >
-                {day ? String(day.getUTCDate()).padStart(2, "0") : ""}
-              </div>
-            ))}
+            {week.days.map((day, index) => {
+              const isWorkday = day && workdayDateSet?.has(getUtcDateKey(day));
+
+              return (
+                <div
+                  key={`${week.kw}-${index}`}
+                  className={`${styles.cell} ${day ? styles.dayCell : styles.emptyCell} ${isWorkday ? styles.workdayCell : ""}`}
+                  aria-hidden={!day}
+                >
+                  {day ? String(day.getUTCDate()).padStart(2, "0") : ""}
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
