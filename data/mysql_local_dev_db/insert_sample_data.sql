@@ -1,6 +1,6 @@
 -- SAMPLE DATA for DEV purposes
 
-use Baemtli;
+USE baemtli;
 
 -- DELETE ALL DATA
 SET FOREIGN_KEY_CHECKS = 0;

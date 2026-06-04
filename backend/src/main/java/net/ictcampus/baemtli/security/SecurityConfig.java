@@ -48,10 +48,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 
                         // --- CHORE CATEGORIES ---
-                        .requestMatchers(HttpMethod.GET, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_READ_ALL)
-                        .requestMatchers(HttpMethod.POST, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
-                        .requestMatchers(HttpMethod.PATCH, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
-                        .requestMatchers(HttpMethod.DELETE, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
+//                        .requestMatchers(HttpMethod.GET, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_READ_ALL)
+                        .requestMatchers(HttpMethod.GET, "/chorecategories/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
+                        .requestMatchers(HttpMethod.POST, "/chorecategories/**").permitAll()
+//                        .requestMatchers(HttpMethod.PATCH, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
+                        .requestMatchers(HttpMethod.PATCH, "/chorecategories/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/chorecategories/**").hasAuthority(Permission.CHORE_CATEGORY_WRITE_ALL)
+                        .requestMatchers(HttpMethod.DELETE, "/chorecategories/**").permitAll()
 
                         // --- TEAMS ---
                         .requestMatchers(HttpMethod.GET, "/teams/**").permitAll()

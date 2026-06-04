@@ -37,16 +37,21 @@ export default function ChoreCategoryForm({
             className={state?.errors?.name ? styles.inputError : ""}
           />
         </label>
+        {state?.errors?.name && (
+          <p className={styles.errorMessage}>{state.errors.name[0]}</p>
+        )}
         <label>
           <span>Beschreibung</span>
           <textarea
             name="description"
             placeholder="Beschreibung eingeben..."
-            defaultValue={
-              state?.fields?.description ?? initialData.description
-            }
+            defaultValue={state?.fields?.description ?? initialData.description}
+            className={state?.errors?.description ? styles.inputError : ""}
           />
         </label>
+        {state?.errors?.description && (
+          <p className={styles.errorMessage}>{state.errors.description[0]}</p>
+        )}
       </div>
       <div className={styles.actions}>
         <button type="submit" disabled={isPending}>
@@ -60,9 +65,6 @@ export default function ChoreCategoryForm({
           </button>
         )}
       </div>
-      {state?.errors?.name && (
-        <p className={styles.errorMessage}>{state.errors.name[0]}</p>
-      )}
       {state?.message && <p className={styles.errorMessage}>{state.message}</p>}
     </form>
   );

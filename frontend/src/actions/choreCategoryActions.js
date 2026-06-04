@@ -9,7 +9,10 @@ const choreCategoryValidationSchema = z.object({
     .string()
     .max(30, "Titel darf maximal 30 Zeichen lang sein.")
     .min(1, "Titel darf nicht leer sein."),
-  description: z.string(),
+  description: z
+    .string()
+    .min(1, "Beschreibung darf nicht leer sein.")
+    .max(1000, "Beschreibung darf maximal 30 Zeichen lang sein."),
 });
 
 export async function createUpdateChoreCategory(prevState, formData) {
