@@ -1,8 +1,10 @@
 package net.ictcampus.baemtli.workday;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.ictcampus.baemtli.workday.dto.WorkdayDTO;
+import net.ictcampus.baemtli.workday.dto.WorkdayInitializationResponse;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +44,13 @@ public class WorkdayController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Generate default workdays", description = "Generates default workdays (Wed-Fri) for a whole year. Permission: team:write:all")
-    @PostMapping("/generate/{year}")
-    public ResponseEntity<Void> generateWorkdays(@PathVariable int year) {
-        workdayService.generateDefaultWorkdays(year);
-        return ResponseEntity.ok().build();
+    @Operation(
+            summary = "Initialize the current school year",
+            description = "Creates the default Wednesday-to-Friday workdays for the current school year if none exist yet."
+    )
+    @ApiResponse(responseCode = "200", description = "Returns whether the school year was initialized or was already present")
+    @PostMapping("/initialize-current-school-year")
+    public ResponseEntity<WorkdayInitializationResponse> initializeCurrentSchoolYear() {
+        return ResponseEntity.ok(workdayService.initializeCurrentSchoolYear());
     }
 }

@@ -3,9 +3,11 @@ package net.ictcampus.baemtli.workday;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import net.ictcampus.baemtli.workday.dto.WorkdayDTO;
+import net.ictcampus.baemtli.workday.dto.WorkdayInitializationResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -52,5 +54,21 @@ public class WorkdayService {
             }
             start = start.plusDays(1);
         }
+    }
+
+    public WorkdayInitializationResponse initializeCurrentSchoolYear() {
+        if (workdayRepository.count() > 0) {
+            return new WorkdayInitializationResponse("already_initialized");
+        }
+
+        int schoolYearStartYear = getCurrentSchoolYearStartYear();
+        generateDefaultWorkdays(schoolYearStartYear);
+
+        return new WorkdayInitializationResponse("initialized");
+    }
+
+    private int getCurrentSchoolYearStartYear() {
+        LocalDate today = LocalDate.now(ZoneId.of("Europe/Zurich"));
+        return today.getMonthValue() >= 8 ? today.getYear() : today.getYear() - 1;
     }
 }
