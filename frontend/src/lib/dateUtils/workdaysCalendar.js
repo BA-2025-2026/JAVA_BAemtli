@@ -1,5 +1,3 @@
-import styles from "./WorkdaysCalendar.module.css";
-
 const MONTHS = [
   "August",
   "September",
@@ -131,45 +129,36 @@ function getMonthWeeks(year, monthIndex) {
   return weeks;
 }
 
-function WorkdayMonth({ year, monthIndex, monthName }) {
-  const weeks = getMonthWeeks(year, monthIndex);
+function getZurichDateParts(date = new Date()) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Zurich",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
-  return (
-    <section className={styles.month}>
-      <h3 className={styles.monthTitle}>{monthName}</h3>
-      <div className={styles.calendarGrid}>
-        <div className={`${styles.cell} ${styles.headerCell}`}>KW</div>
-        {WEEKDAYS.map((weekday) => (
-          <div key={weekday} className={`${styles.cell} ${styles.headerCell}`}>
-            {weekday}
-          </div>
-        ))}
-
-        {weeks.map((week) => (
-          <div
-            key={`${year}-${monthIndex}-${week.kw}`}
-            className={styles.weekRow}
-          >
-            <div className={`${styles.cell} ${styles.kwCell}`}>{week.kw}</div>
-            {week.days.map((day, index) => (
-              <div
-                key={`${week.kw}-${index}`}
-                className={`${styles.cell} ${day ? styles.dayCell : styles.emptyCell}`}
-                aria-hidden={!day}
-              >
-                {day ? String(day.getUTCDate()).padStart(2, "0") : ""}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </section>
+  const parts = formatter.formatToParts(date);
+  const values = Object.fromEntries(
+    parts
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value]),
   );
+
+  return {
+    year: Number(values.year),
+    month: Number(values.month),
+    day: Number(values.day),
+  };
 }
 
-export default function WorkdaysCalendar({ schoolYearStartYear }) {
+function getSchoolYearStartYear(currentDate = new Date()) {
+  const { year, month } = getZurichDateParts(currentDate);
+  return month >= 8 ? year : year - 1;
+}
+
+function getSchoolYearMonths(schoolYearStartYear) {
   // The display order is already August to July, so the loop index is the month position.
-  const months = MONTHS.map((monthName, index) => {
+  return MONTHS.map((monthName, index) => {
     // Convert the display position to the real JavaScript month index for date math.
     const monthIndex = (index + 7) % 12;
 
@@ -180,17 +169,19 @@ export default function WorkdaysCalendar({ schoolYearStartYear }) {
       year: schoolYearStartYear + (monthIndex <= 6 ? 1 : 0),
     };
   });
-
-  return (
-    <div className={styles.calendar}>
-      {months.map(({ year, monthIndex, monthName }) => (
-        <WorkdayMonth
-          key={`${year}-${monthIndex}`}
-          year={year}
-          monthIndex={monthIndex}
-          monthName={monthName}
-        />
-      ))}
-    </div>
-  );
 }
+
+export {
+  MONTHS,
+  WEEKDAYS,
+  createUtcDate,
+  getFirstWorkdayOfMonth,
+  getIsoWeekNumber,
+  getLastWorkdayOfMonth,
+  getMondayOfWeek,
+  getMonthWeeks,
+  getSchoolYearMonths,
+  getSchoolYearStartYear,
+  getZurichDateParts,
+  getWeekdayIndex,
+};
