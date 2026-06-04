@@ -4,6 +4,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import net.ictcampus.baemtli.workday.dto.WorkdayDTO;
 import net.ictcampus.baemtli.workday.dto.WorkdayInitializationResponse;
+import net.ictcampus.baemtli.workday.dto.WorkdayToggleResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -38,6 +39,16 @@ public class WorkdayService {
             throw new EntityNotFoundException("Workday not found for this date");
         }
         workdayRepository.deleteById(date);
+    }
+
+    public WorkdayToggleResponse toggleWorkday(LocalDate date) {
+        if (workdayRepository.existsById(date)) {
+            workdayRepository.deleteById(date);
+            return new WorkdayToggleResponse("removed");
+        }
+
+        workdayRepository.save(new Workday(date));
+        return new WorkdayToggleResponse("added");
     }
 
     public void generateDefaultWorkdays(int year) {

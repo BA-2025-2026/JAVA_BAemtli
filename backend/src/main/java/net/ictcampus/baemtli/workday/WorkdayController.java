@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.ictcampus.baemtli.workday.dto.WorkdayDTO;
 import net.ictcampus.baemtli.workday.dto.WorkdayInitializationResponse;
+import net.ictcampus.baemtli.workday.dto.WorkdayToggleResponse;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,16 @@ public class WorkdayController {
     @PostMapping("/{date}")
     public ResponseEntity<WorkdayDTO> addWorkday(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.status(HttpStatus.CREATED).body(workdayService.addWorkday(date));
+    }
+
+    @Operation(
+            summary = "Toggle a workday",
+            description = "Adds the date to the workdays if it does not exist yet, otherwise removes it."
+    )
+    @ApiResponse(responseCode = "200", description = "Returns whether the workday was added or removed")
+    @PostMapping("/{date}/toggle")
+    public ResponseEntity<WorkdayToggleResponse> toggleWorkday(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(workdayService.toggleWorkday(date));
     }
 
     @Operation(summary = "Remove a workday", description = "Removes a date from the BA workdays. Permission: team:write:all")
