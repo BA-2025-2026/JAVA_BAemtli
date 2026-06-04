@@ -91,6 +91,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/dayassignments/**").hasAuthority(Permission.DAY_ASSIGNMENT_WRITE_TEAM)
                         .requestMatchers(HttpMethod.DELETE, "/dayassignments/**").hasAuthority(Permission.DAY_ASSIGNMENT_WRITE_TEAM)
 
+                        // ARBEITSTAGE
+                        .requestMatchers(HttpMethod.GET, "/workdays/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/workdays/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/workdays/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/workdays/**").permitAll()
+
+
                         // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
