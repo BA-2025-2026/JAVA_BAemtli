@@ -1,0 +1,59 @@
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.month {
+  flex: 1 1 16.5rem;
+  max-width: 18rem;
+  min-width: 15.5rem;
+}
+
+.monthTitle {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+}
+
+.calendarGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: 2.4rem repeat(5, minmax(0, 1fr));
+  gap: 0.2rem;
+}
+
+.cell {
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  border-radius: 0.35rem;
+}
+
+.headerCell {
+  font-weight: 600;
+  color: var(--text-primary);
+  min-height: 1.8rem;
+}
+
+.kwCell {
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.dayCell {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.emptyCell {
+  background-color: transparent;
+}
