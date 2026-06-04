@@ -4,6 +4,7 @@ import {
   getMonthWeeks,
   getUtcDateKey,
 } from "@/lib/dateUtils/WorkdaysCalendarUtils";
+import WorkdayToggleCell from "../WorkdayToggleCell/WorkdayToggleCell";
 
 export default function WorkdayMonth({
   year,
@@ -37,15 +38,17 @@ export default function WorkdayMonth({
             <div className={`${styles.cell} ${styles.kwCell}`}>{week.kw}</div>
             {week.days.map((day, index) => {
               const isWorkday = day && workdayDateSet?.has(getUtcDateKey(day));
+              const date = day ? getUtcDateKey(day) : "";
+              const dayLabel = day ? String(day.getUTCDate()).padStart(2, "0") : "";
 
               return (
-                <div
+                <WorkdayToggleCell
                   key={`${week.kw}-${index}`}
-                  className={`${styles.cell} ${day ? styles.dayCell : styles.emptyCell} ${isWorkday ? styles.workdayCell : ""}`}
-                  aria-hidden={!day}
-                >
-                  {day ? String(day.getUTCDate()).padStart(2, "0") : ""}
-                </div>
+                  date={date}
+                  dayLabel={dayLabel}
+                  isWorkday={Boolean(isWorkday)}
+                  isEmpty={!day}
+                />
               );
             })}
           </div>

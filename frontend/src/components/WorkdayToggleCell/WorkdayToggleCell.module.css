@@ -1,0 +1,31 @@
+.form {
+  display: contents;
+}
+
+.cellButton {
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  border-radius: 0.35rem;
+  width: 100%;
+}
+
+.dayCell {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.workdayCell {
+  background-color: var(--baemtli-green);
+}
+
+.emptyCell {
+  background-color: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+.pendingCell {
+  opacity: 0.7;
+}

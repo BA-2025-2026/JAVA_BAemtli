@@ -9,6 +9,9 @@ const WorkdaysAPI = {
   initializeCurrentSchoolYear(accessToken = null) {
     return postJSON(`${URL}/initialize-current-school-year`, {}, accessToken);
   },
+  toggle(date, accessToken = null) {
+    return postJSON(`${URL}/${date}/toggle`, {}, accessToken);
+  },
 };
 
 export default WorkdaysAPI;
