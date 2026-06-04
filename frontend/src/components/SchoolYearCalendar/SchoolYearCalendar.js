@@ -1,5 +1,5 @@
 import styles from "./SchoolYearCalendar.module.css";
-import { getSchoolYearMonths } from "@/lib/dateUtils/workdaysCalendar";
+import { getSchoolYearMonths } from "@/lib/dateUtils/WorkdaysCalendarUtils";
 import WorkdayMonth from "../WorkdayMonth/WorkdayMonth";
 
 export default function SchoolYearCalendar({ schoolYearStartYear }) {

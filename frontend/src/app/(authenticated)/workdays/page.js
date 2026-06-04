@@ -2,7 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import SchoolYearCalendar from "@/components/SchoolYearCalendar/SchoolYearCalendar";
-import { getSchoolYearStartYear } from "@/lib/dateUtils/workdaysCalendar";
+import { getSchoolYearStartYear } from "@/lib/dateUtils/WorkdaysCalendarUtils";
 import styles from "./page.module.css";
 
 export default function Workdays() {
@@ -14,7 +14,7 @@ export default function Workdays() {
       <div className={styles.header}>
         <h1>Arbeitstage</h1>
         <p className={styles.subtitle}>
-          Schuljahr {schoolYearStartYear} bis {schoolYearEndYear}
+          Im Ausbildungsjahr {schoolYearStartYear}-{schoolYearEndYear}
         </p>
       </div>
       <SchoolYearCalendar schoolYearStartYear={schoolYearStartYear} />

@@ -1,5 +1,5 @@
 import styles from "./WorkdayMonth.module.css";
-import { WEEKDAYS, getMonthWeeks } from "@/lib/dateUtils/workdaysCalendar";
+import { WEEKDAYS, getMonthWeeks } from "@/lib/dateUtils/WorkdaysCalendarUtils";
 
 export default function WorkdayMonth({ year, monthIndex, monthName }) {
   const weeks = getMonthWeeks(year, monthIndex);
@@ -8,12 +8,17 @@ export default function WorkdayMonth({ year, monthIndex, monthName }) {
     <section className={styles.month}>
       <h3 className={styles.monthTitle}>{monthName}</h3>
       <div className={styles.calendarGrid}>
-        <div className={`${styles.cell} ${styles.headerCell}`}>KW</div>
-        {WEEKDAYS.map((weekday) => (
-          <div key={weekday} className={`${styles.cell} ${styles.headerCell}`}>
-            {weekday}
-          </div>
-        ))}
+        <div className={styles.headerRow}>
+          <div className={`${styles.cell} ${styles.headerCell}`}>KW</div>
+          {WEEKDAYS.map((weekday) => (
+            <div
+              key={weekday}
+              className={`${styles.cell} ${styles.headerCell}`}
+            >
+              {weekday}
+            </div>
+          ))}
+        </div>
 
         {weeks.map((week) => (
           <div

@@ -16,6 +16,12 @@
   gap: 0.2rem;
 }
 
+.headerRow {
+  display: grid;
+  grid-template-columns: 2.4rem repeat(5, minmax(0, 1fr));
+  gap: 0.2rem;
+}
+
 .weekRow {
   display: grid;
   grid-template-columns: 2.4rem repeat(5, minmax(0, 1fr));
