@@ -5,6 +5,14 @@ async function handleResponse(response) {
   if (!response.ok) {
     const error = new Error("Request failed with status " + response.status);
     error.response = response.status;
+    error.url = response.url;
+
+    console.error("Backend request failed", {
+      status: response.status,
+      statusText: response.statusText,
+      url: response.url,
+    });
+
     throw error;
   }
 
@@ -15,11 +23,6 @@ async function handleResponse(response) {
   ) {
     return null;
   }
-
-  console.log("HANDLE RESPONSE");
-  console.log(response);
-  console.log(response.text);
-
   // Parse answer
   const text = await response.text();
   return text ? JSON.parse(text) : null;

@@ -1,0 +1,40 @@
+.choreCategoryCard {
+  width: 100%;
+  background-color: var(--white);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  border-radius: var(--borderradius);
+  box-shadow: var(--shadow);
+  padding: 0.8rem 1rem;
+  margin: 0 0 1rem 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.crudButtons {
+  visibility: hidden;
+  cursor: pointer;
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.choreCategoryCard:hover .crudButtons {
+  visibility: visible;
+}

@@ -1,0 +1,23 @@
+.pageActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.addButton,
+.formCard {
+  background-color: var(--white);
+  border-radius: var(--borderradius);
+  box-shadow: var(--shadow);
+  padding: 0.8rem 1rem;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.formCard {
+  width: min(100%, 34rem);
+}

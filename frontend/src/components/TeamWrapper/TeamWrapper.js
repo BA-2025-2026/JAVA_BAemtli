@@ -3,7 +3,13 @@ import TeamFeed from "@/components/TeamFeed/TeamFeed";
 
 export default async function TeamWrapper() {
   // Fetch Teams
-  const teams = await TeamsAPI.readAll();
+  let teams = [];
+
+  try {
+    teams = await TeamsAPI.readAll();
+  } catch (error) {
+    console.error("Teams konnten nicht geladen werden.", error);
+  }
 
   return (
     <section>
