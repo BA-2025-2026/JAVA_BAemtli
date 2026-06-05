@@ -90,9 +90,7 @@ export default function MonthAssignmentsBoard({
           >
             <div
               className={`${styles.cell} ${styles.labelCell} ${styles.headerCell}`}
-            >
-              Ämtli
-            </div>
+            ></div>
             {monthBlock.map(({ monthName, year, monthIndex }) => (
               <div
                 key={`${year}-${monthIndex}`}
