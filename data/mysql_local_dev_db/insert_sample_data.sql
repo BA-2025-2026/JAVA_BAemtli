@@ -7,11 +7,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE `choreassignment`;
 TRUNCATE TABLE `monthassignment`;
 TRUNCATE TABLE `trainee`;
-TRUNCATE TABLE `login`;
 TRUNCATE TABLE `user`;
 TRUNCATE TABLE `team`;
 TRUNCATE TABLE `chorecategory`;
-TRUNCATE TABLE `month`;
 TRUNCATE TABLE `workday`;
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -49,3 +47,9 @@ INSERT INTO `chorecategory` (`Name`, `Description`) VALUES
 
 select *
 from workday;
+
+select *
+from monthassignment;
+
+select *
+from team;

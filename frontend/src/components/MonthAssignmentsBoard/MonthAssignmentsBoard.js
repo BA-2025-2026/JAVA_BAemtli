@@ -129,7 +129,9 @@ export default function MonthAssignmentsBoard({
       ))}
 
       {choreCategories.length === 0 && (
-        <p className="noEntityInfo">Noch keine Chore Categories vorhanden.</p>
+        <p className="noEntityInfo">
+          Es wurden noch keine Ämtlikategorien erfasst.
+        </p>
       )}
     </div>
   );

@@ -12,5 +12,5 @@ public class MonthAssignmentDTO {
     private Integer id;
     private Integer teamId;
     private Integer choreCategoryId;
-    private Integer monthId;
+    private Integer monthInt;
 }

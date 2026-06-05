@@ -1,6 +1,8 @@
 package net.ictcampus.baemtli.monthassignment;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import net.ictcampus.baemtli.chorecategory.ChoreCategory;
 import net.ictcampus.baemtli.team.Team;
@@ -26,8 +28,8 @@ public class MonthAssignment {
     @JoinColumn(name = "Chorecategory_ID", nullable = false)
     private ChoreCategory choreCategory;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "Month_ID", nullable = false)
-    private Month month;
+    @Column(name = "monthInt", nullable = false)
+    @Min(value = 1, message = "Month Integer needs to be at least 1.")
+    @Max(value = 12, message = "Month Integer cannot be bigger than 12.")
+    private Integer monthInt;
 }

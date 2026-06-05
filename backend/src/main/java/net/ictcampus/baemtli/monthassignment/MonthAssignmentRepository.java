@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface MonthAssignmentRepository extends JpaRepository<MonthAssignment, Integer> {
     List<MonthAssignment> findAll();
-    Optional<MonthAssignment> findByTeamIdAndChoreCategoryIdAndMonthId(Integer teamId, Integer choreCategoryId, Integer monthId);
+    Optional<MonthAssignment> findByTeamIdAndChoreCategoryIdAndMonthInt(Integer teamId, Integer choreCategoryId, Integer MonthInt);
 }

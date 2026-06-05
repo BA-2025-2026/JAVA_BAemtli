@@ -79,10 +79,14 @@ public class SecurityConfig {
                         //.requestMatchers(HttpMethod.DELETE, "/trainees/**").hasAuthority(Permission.TRAINEE_WRITE_ALL)
 
                         // --- MONATSZUTEILUNGEN ---
-                        .requestMatchers(HttpMethod.GET, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_READ_ALL)
-                        .requestMatchers(HttpMethod.POST, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_WRITE_ALL)
-                        .requestMatchers(HttpMethod.PATCH, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_WRITE_ALL)
-                        .requestMatchers(HttpMethod.DELETE, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_WRITE_ALL)
+                        //.requestMatchers(HttpMethod.GET, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_READ_ALL)
+                        .requestMatchers(HttpMethod.GET, "/monthassignments/**").permitAll()
+                        //.requestMatchers(HttpMethod.POST, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_WRITE_ALL)
+                        .requestMatchers(HttpMethod.POST, "/monthassignments/**").permitAll()
+                        //.requestMatchers(HttpMethod.PATCH, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_WRITE_ALL)
+                        .requestMatchers(HttpMethod.PATCH, "/monthassignments/**").permitAll()
+                        //.requestMatchers(HttpMethod.DELETE, "/monthassignments/**").hasAuthority(Permission.MONTH_ASSIGNMENT_WRITE_ALL)
+                        .requestMatchers(HttpMethod.DELETE, "/monthassignments/**").permitAll()
 
                         // --- TAGESEINTEILUNGEN (DAY ASSIGNMENTS) ---
                         // Annahme basierend auf der Matrix, auch wenn die Endpoints noch nicht voll definiert sind

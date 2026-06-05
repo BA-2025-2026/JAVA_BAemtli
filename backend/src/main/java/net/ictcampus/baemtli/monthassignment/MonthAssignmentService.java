@@ -6,6 +6,7 @@ import net.ictcampus.baemtli.chorecategory.ChoreCategoryRepository;
 import net.ictcampus.baemtli.monthassignment.dto.CreateMonthAssignmentDTO;
 import net.ictcampus.baemtli.monthassignment.dto.MonthAssignmentDTO;
 import net.ictcampus.baemtli.monthassignment.dto.MonthAssignmentMapper;
+import net.ictcampus.baemtli.monthassignment.dto.UpdateMonthAssignmentDTO;
 import net.ictcampus.baemtli.team.Team;
 import net.ictcampus.baemtli.team.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,13 @@ public class MonthAssignmentService {
     private final MonthAssignmentRepository monthAssignmentRepository;
     private final TeamRepository teamRepository;
     private final ChoreCategoryRepository choreCategoryRepository;
-    private final MonthRepository monthRepository;
 
     public MonthAssignmentService(MonthAssignmentRepository monthAssignmentRepository,
                                    TeamRepository teamRepository,
-                                   ChoreCategoryRepository choreCategoryRepository,
-                                   MonthRepository monthRepository) {
+                                   ChoreCategoryRepository choreCategoryRepository) {
         this.monthAssignmentRepository = monthAssignmentRepository;
         this.teamRepository = teamRepository;
         this.choreCategoryRepository = choreCategoryRepository;
-        this.monthRepository = monthRepository;
     }
 
     public List<MonthAssignmentDTO> getAllAssignments() {
@@ -37,7 +35,7 @@ public class MonthAssignmentService {
     }
 
     public MonthAssignmentDTO createAssignment(CreateMonthAssignmentDTO dto) {
-        if (monthAssignmentRepository.findByTeamIdAndChoreCategoryIdAndMonthId(dto.getTeamId(), dto.getChoreCategoryId(), dto.getMonthId()).isPresent()) {
+        if (monthAssignmentRepository.findByTeamIdAndChoreCategoryIdAndMonthInt(dto.getTeamId(), dto.getChoreCategoryId(), dto.getMonthInt()).isPresent()) {
             throw new jakarta.persistence.EntityExistsException("Identical monthly assignment already exists");
         }
 
@@ -45,42 +43,39 @@ public class MonthAssignmentService {
                 .orElseThrow(() -> new EntityNotFoundException("Team not found"));
         ChoreCategory category = choreCategoryRepository.findById(dto.getChoreCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Chore category not found"));
-        Month month = monthRepository.findById(dto.getMonthId())
-                .orElseThrow(() -> new EntityNotFoundException("Month not found"));
 
         MonthAssignment assignment = new MonthAssignment();
         assignment.setTeam(team);
         assignment.setChoreCategory(category);
-        assignment.setMonth(month);
+        assignment.setMonthInt(dto.getMonthInt());
 
         return MonthAssignmentMapper.toDto(monthAssignmentRepository.save(assignment));
     }
 
-    public MonthAssignmentDTO updateAssignment(Integer id, net.ictcampus.baemtli.monthassignment.dto.UpdateMonthAssignmentDTO dto) {
+    public MonthAssignmentDTO updateAssignment(Integer id, UpdateMonthAssignmentDTO dto) {
         MonthAssignment assignment = monthAssignmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Month assignment not found"));
 
         if (dto.getTeamId() != null) {
+            // Check if team exists
             Team team = teamRepository.findById(dto.getTeamId())
                     .orElseThrow(() -> new EntityNotFoundException("Team not found"));
+            // Update assignment entry
             assignment.setTeam(team);
         }
         if (dto.getChoreCategoryId() != null) {
+            // Check if chorecategory exists
             ChoreCategory category = choreCategoryRepository.findById(dto.getChoreCategoryId())
                     .orElseThrow(() -> new EntityNotFoundException("Chore category not found"));
+            // Update assignment entity
             assignment.setChoreCategory(category);
-        }
-        if (dto.getMonthId() != null) {
-            Month month = monthRepository.findById(dto.getMonthId())
-                    .orElseThrow(() -> new EntityNotFoundException("Month not found"));
-            assignment.setMonth(month);
         }
 
         // Check for duplicates after modification
-        monthAssignmentRepository.findByTeamIdAndChoreCategoryIdAndMonthId(
+        monthAssignmentRepository.findByTeamIdAndChoreCategoryIdAndMonthInt(
                 assignment.getTeam().getId(),
                 assignment.getChoreCategory().getId(),
-                assignment.getMonth().getId()
+                assignment.getMonthInt()
         ).ifPresent(existing -> {
             if (!existing.getId().equals(id)) {
                 throw new jakarta.persistence.EntityExistsException("Identical monthly assignment already exists");

@@ -9,7 +9,7 @@ public class MonthAssignmentMapper {
                 assignment.getId(),
                 assignment.getTeam().getId(),
                 assignment.getChoreCategory().getId(),
-                assignment.getMonth().getId()
+                assignment.getMonthInt()
         );
     }
 }
