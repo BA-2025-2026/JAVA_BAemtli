@@ -5,7 +5,7 @@ import styles from "./MonthAssignmentsBoard.module.css";
 import { getSchoolYearMonths } from "@/lib/dateUtils/WorkdaysCalendarUtils";
 import MonthAssignmentsTeamSwitch from "../MonthAssignmentsTeamSwitch/MonthAssignmentsTeamSwitch";
 
-const LABEL_COLUMN_WIDTH_REM = 14;
+const LABEL_COLUMN_WIDTH_REM = 10;
 const MONTH_COLUMN_WIDTH_REM = 10;
 const COLUMN_GAP_REM = 0.5;
 
@@ -88,8 +88,10 @@ export default function MonthAssignmentsBoard({
               gridTemplateColumns: `minmax(${LABEL_COLUMN_WIDTH_REM}rem, ${LABEL_COLUMN_WIDTH_REM}rem) repeat(${monthBlock.length}, minmax(${MONTH_COLUMN_WIDTH_REM}rem, 1fr))`,
             }}
           >
-            <div className={`${styles.cell} ${styles.labelCell} ${styles.headerCell}`}>
-              Chore
+            <div
+              className={`${styles.cell} ${styles.labelCell} ${styles.headerCell}`}
+            >
+              Ämtli
             </div>
             {monthBlock.map(({ monthName, year, monthIndex }) => (
               <div

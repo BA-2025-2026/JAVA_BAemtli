@@ -20,9 +20,6 @@
 
 .cell {
   min-height: 3.25rem;
-  background-color: var(--white);
-  border-radius: var(--borderradius);
-  box-shadow: var(--shadow);
   padding: 0.6rem 0.75rem;
   display: flex;
   align-items: center;
@@ -43,4 +40,5 @@
 
 .row .monthCell {
   min-width: 10rem;
+  max-width: 15rem;
 }
